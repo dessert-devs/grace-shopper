@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Product, Order, OrderDetail} = require('../server/db/models')
+const {User, Product, Order, Order_Product} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -16,8 +16,7 @@ async function seed() {
     }),
     User.create({
       email: 'mikyla@email.com',
-      password: '3455',
-      user_type: 'user'
+      password: '3455'
     }),
     User.create({
       email: 'josephine@email.com',
@@ -34,15 +33,33 @@ async function seed() {
   ])
 
   const orders = await Promise.all([
-    Order.create({pending: 1, userId: 1}),
-    Order.create({pending: 0, userId: 2}),
-    Order.create({pending: 1, userId: 3})
+    Order.create({userId: 1}),
+    Order.create({pending: false, userId: 2}),
+    Order.create({pending: true, userId: 3})
   ])
 
-  const orderDetails = await Promise.all([
-    OrderDetail.create({orderId: 1, productId: 1, amount: 5}),
-    OrderDetail.create({orderId: 2, productId: 2, amount: 4}),
-    OrderDetail.create({orderId: 3, productId: 3, amount: 2})
+  const order_products = await Promise.all([
+    Order_Product.create({
+      orderId: 1,
+      productId: 1,
+      amount: 5,
+      price_per_item: 5.0,
+      total_price: 25.0
+    }),
+    Order_Product.create({
+      orderId: 1,
+      productId: 2,
+      amount: 4,
+      price_per_item: 4.0,
+      total_price: 8.0
+    }),
+    Order_Product.create({
+      orderId: 3,
+      productId: 3,
+      amount: 2,
+      price_per_item: 2.0,
+      total_price: 4.0
+    })
   ])
 
   // console.log(`seeded ${users.length} users`)
