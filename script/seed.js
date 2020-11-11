@@ -16,14 +16,14 @@ async function seed() {
   const products = await Promise.all([
     Product.create({
       name: 'Rainbow Cake',
-      price: 45.99,
+      price: 4599,
       description: 'a cake that is rainbow',
       category: 'cake',
       inventoryQty: 10
     }),
     Product.create({
       name: 'Chocolate Chip Cookies',
-      price: 7.99,
+      price: 700,
       img:
         'https://i.pinimg.com/originals/62/82/28/628228fad3a973efe5b3716b1fad5dd3.png',
       description: 'a cookie with chocolate chips',

@@ -11,11 +11,12 @@ const Product = db.define('product', {
   },
 
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       isDecimal: true,
-      notEmpty: true
+      notEmpty: true,
+      min: 0
     }
   },
 
@@ -36,7 +37,8 @@ const Product = db.define('product', {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
+      min: 0
     }
   }
 })
