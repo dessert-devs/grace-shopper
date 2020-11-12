@@ -14,7 +14,6 @@ const Product = db.define('product', {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
-      isDecimal: true,
       notEmpty: true,
       min: 0
     }
