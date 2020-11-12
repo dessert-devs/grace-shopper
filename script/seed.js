@@ -17,17 +17,41 @@ async function seed() {
     Product.create({
       name: 'Rainbow Cake',
       price: 4599,
+      img: '/dessert-images/RainbowCake200x200.jpg',
       description: 'a cake that is rainbow',
       category: 'cake',
-      inventoryQty: 10
+      inventoryQty: 30
     }),
     Product.create({
       name: 'Chocolate Chip Cookies',
       price: 700,
-      img:
-        'https://i.pinimg.com/originals/62/82/28/628228fad3a973efe5b3716b1fad5dd3.png',
+      img: '/dessert-images/ChocChipCookie_200x200.jpg',
       description: 'a cookie with chocolate chips',
       category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Donut',
+      price: 500,
+      img: '/dessert-images/Donut_200x200.jpg',
+      description: 'A Strawberry Frosted Donut!',
+      category: 'pastry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Cupcake',
+      price: 300,
+      img: '/dessert-images/ChocCupcake_200x200.jpg',
+      description: 'A Yummy Chocolate Frosted Cupcake!',
+      category: 'cupcake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Valentines Bundle',
+      price: 7000,
+      img: '/dessert-images/ValentinesBundle_200x200.jpg',
+      description: "A Bundle of our Cutest Valentine's Day Desserts!",
+      category: 'seasonal',
       inventoryQty: 30
     })
   ])
