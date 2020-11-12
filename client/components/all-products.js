@@ -8,11 +8,13 @@ class AllProducts extends React.Component {
   }
 
   render() {
-    return <div>put the singular product component here!</div>
+    console.log('props->>', this.props.products)
+    return <div>put the singular product component!</div>
   }
 }
 
 const mapState = state => {
+  console.log('state', state)
   return {
     products: state.products
   }
