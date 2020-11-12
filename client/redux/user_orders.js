@@ -5,13 +5,14 @@ import thunkMiddleware from 'redux-thunk'
 
 const GET_PENDING_ORDERS = 'GET_PENDING_ORDERS'
 const ADD_ORDER = 'ADD_ORDER'
+const EDIT_ORDER = 'EDIT_ORDER'
 const DELETE_ORDER = 'DELETE_ORDER'
 
 //Action Creator
 export const getPendingOrders = pendingOrders => {
   return {
     type: GET_PENDING_ORDERS,
-    pendingOrders
+    pendingOrders //object
   }
 }
 
@@ -20,6 +21,13 @@ export const addOrderCreator = newOrder => {
   return {
     type: ADD_ORDER,
     newOrder
+  }
+}
+
+export const editOrderCreator = pendingOrder => {
+  return {
+    type: EDIT_ORDER,
+    pendingOrder
   }
 }
 
@@ -59,6 +67,21 @@ export const postOrder = (newOrder, userId) => {
 }
 
 //THUNK
+export const updatePendingOrder = (pendingOrder, userId, productId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(
+        `/api/users/:${userId}/pending-order/${productId}`,
+        pendingOrder
+      )
+      dispatch(editOrderCreator(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+//THUNK
 export const removeOrder = (userId, productId) => {
   return async dispatch => {
     try {
@@ -73,15 +96,26 @@ export const removeOrder = (userId, productId) => {
 }
 
 //REDUCER
-const initialState = [] //array of pendingOrder objects
+const initialState = {} // pendingOrder object
 export default function pendingOrdersReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PENDING_ORDERS:
       return action.pendingOrders
     case ADD_ORDER:
-      return [...state, action.newOrder]
+      return {...state, products: [...state.products, action.newOrder]}
+    case EDIT_ORDER:
+      return {
+        ...state,
+        products: [
+          ...state.products.filter(order => order.id !== action.productId),
+          action.pendingOrder
+        ]
+      }
     case DELETE_ORDER:
-      return state.filter(order => order.productId !== action.productId)
+      return {
+        ...state,
+        products: state.products.filter(order => order.id !== action.productId)
+      }
     default:
       return state
   }
