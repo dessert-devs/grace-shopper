@@ -23,13 +23,11 @@ router.get('/:userId/pending-order', async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
-        userId: req.params.userId
+        userId: req.params.userId,
+        pending: true
       },
       include: {
-        model: Order_Product,
-        include: {
-          model: Product
-        }
+        model: Product
       }
     })
     res.json(orders[0])
@@ -43,6 +41,8 @@ router.post('/:userId/pending-order', async (req, res, next) => {
     // if(req.body.firstName===undefined || req.body.lastName === undefined || req.body.email===undefined){
     //   res.status(500).json('Fields First Name, Last Name and Email are required!')
     // }
+
+    //-----------------
     const addedCart = await Order.findOrCreate({
       where: {userId: req.params.userId, pending: true}
     })
@@ -67,6 +67,7 @@ router.post('/:userId/pending-order', async (req, res, next) => {
       productId: product_id
     })
     res.json(addedDetail)
+    //-------------------------------------
   } catch (err) {
     next(err)
   }
