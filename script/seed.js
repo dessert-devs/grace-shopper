@@ -2,6 +2,7 @@
 
 const db = require('../server/db')
 const {User} = require('../server/db/models')
+const {Product} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -12,7 +13,51 @@ async function seed() {
     User.create({email: 'murphy@email.com', password: '123'})
   ])
 
+  const products = await Promise.all([
+    Product.create({
+      name: 'Rainbow Cake',
+      price: 4599,
+      img: '/dessert-images/RainbowCake200x200.jpg',
+      description: 'a cake that is rainbow',
+      category: 'cake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Chocolate Chip Cookies',
+      price: 700,
+      img: '/dessert-images/ChocChipCookie_200x200.jpg',
+      description: 'a cookie with chocolate chips',
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Donut',
+      price: 500,
+      img: '/dessert-images/Donut_200x200.jpg',
+      description: 'A Strawberry Frosted Donut!',
+      category: 'pastry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Cupcake',
+      price: 300,
+      img: '/dessert-images/ChocCupcake_200x200.jpg',
+      description: 'A Yummy Chocolate Frosted Cupcake!',
+      category: 'cupcake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Valentines Bundle',
+      price: 7000,
+      img: '/dessert-images/ValentinesBundle_200x200.jpg',
+      description: "A Bundle of our Cutest Valentine's Day Desserts!",
+      category: 'seasonal',
+      inventoryQty: 30
+    })
+  ])
+
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${products.length} products`)
   console.log(`seeded successfully`)
 }
 
