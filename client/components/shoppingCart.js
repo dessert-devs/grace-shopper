@@ -2,8 +2,12 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 
-import {fetchPendingOrders, updatePendingOrder} from '../redux/user_orders'
-import {removeOrder} from '../redux/single_user_order'
+import {
+  fetchPendingOrders,
+  removeOrder,
+  updatePendingOrder
+} from '../redux/user_orders'
+// import {removeOrder, updatePendingOrder} from '../redux/single_user_order'
 
 class ShoppingCart extends Component {
   constructor() {
@@ -24,10 +28,15 @@ class ShoppingCart extends Component {
 
   delete(userId, productId) {
     console.log('in handle delete!')
+    console.log('userid here: ', userId)
+    console.log(' prod id here: ', productId)
+
+    // alert('here is productid and USERID: '+productId+userId)
     this.props.deleteOrder(userId, productId)
   }
 
   handleChange(event) {
+    event.preventDefault()
     this.setState({value: event.target.value})
   }
 
@@ -67,6 +76,7 @@ class ShoppingCart extends Component {
     return (
       <div>
         <h1>Here's your Shopping Cart</h1>
+        {console.log('original object: ', pendingOrders)}
         {pendingOrders.products &&
           // products &&
           pendingOrders.products.map(order => {
@@ -96,6 +106,7 @@ class ShoppingCart extends Component {
 
                 <h2>price:</h2>
                 <h4>{order.order_product.price_per_item}</h4>
+                {console.log('order here: ', order)}
                 <h2>total:</h2>
                 <h4>{order.order_product.total_price}</h4>
                 <button

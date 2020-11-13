@@ -90,13 +90,29 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
     })
     // console.log('order product here: ', order_product)
     await order_product[0].update(req.body)
-    const updated = await Order_Product.findAll({
+    // const updated = await Order_Product.findAll({
+    //   where: {
+    //     orderId: order_id,
+    //     productId: req.params.productId
+    //   }
+    // })
+    const updated = await Order.findAll({
       where: {
-        orderId: order_id,
-        productId: req.params.productId
-      }
+        id: req.params.userId,
+        pending: true
+      },
+      include: [
+        {
+          model: Product,
+          where: {
+            id: req.params.productId
+          },
+          required: true
+        }
+      ]
     })
-    res.json(updated[0])
+    console.log(updated)
+    res.json(updated[0].products[0])
   } catch (error) {
     next(error)
   }
