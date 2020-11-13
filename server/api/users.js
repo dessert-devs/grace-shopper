@@ -79,16 +79,16 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
     const order = await Order.findAll({
       where: {userId: req.params.userId}
     })
-    console.log('order here: ', order)
+    // console.log('order here: ', order)
     const order_id = order[0].dataValues.id
-    console.log('order id here: ', order_id)
+    // console.log('order id here: ', order_id)
     const order_product = await Order_Product.findAll({
       where: {
         orderId: order_id,
         productId: req.params.productId
       }
     })
-    console.log('order product here: ', order_product)
+    // console.log('order product here: ', order_product)
     await order_product[0].update(req.body)
     const updated = await Order_Product.findAll({
       where: {
@@ -104,7 +104,7 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
 
 router.delete('/:userId/pending-order/:productId', async (req, res, next) => {
   try {
-    const order = await Order.findAll({userId: req.params.userId})
+    const order = await Order.findAll({where: {userId: req.params.userId}})
     const order_id = order[0].dataValues.id
     const order_product = await Order_Product.findAll({
       where: {

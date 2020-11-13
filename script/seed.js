@@ -54,6 +54,20 @@ async function seed() {
       total_price: 8.0
     }),
     Order_Product.create({
+      orderId: 1,
+      productId: 3,
+      amount: 5,
+      price_per_item: 4.0,
+      total_price: 12.0
+    }),
+    Order_Product.create({
+      orderId: 1,
+      productId: 4,
+      amount: 4,
+      price_per_item: 5.0,
+      total_price: 20.0
+    }),
+    Order_Product.create({
       orderId: 3,
       productId: 3,
       amount: 2,
