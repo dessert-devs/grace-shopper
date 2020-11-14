@@ -55,10 +55,6 @@ router.post('/:userId/pending-order', async (req, res, next) => {
       }
     })
     const product_id = product[0].dataValues.id
-    // console.log('here is full product: ', product)
-    // const {dataValues} = product[0]
-    // const product_id = dataVales.id
-    // console.log('here is product id: ')
     const addedDetail = await Order_Product.create({
       orderId: order_id,
       amount,
@@ -79,23 +75,14 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
     const order = await Order.findAll({
       where: {userId: req.params.userId}
     })
-    // console.log('order here: ', order)
     const order_id = order[0].dataValues.id
-    // console.log('order id here: ', order_id)
     const order_product = await Order_Product.findAll({
       where: {
         orderId: order_id,
         productId: req.params.productId
       }
     })
-    // console.log('order product here: ', order_product)
     await order_product[0].update(req.body)
-    // const updated = await Order_Product.findAll({
-    //   where: {
-    //     orderId: order_id,
-    //     productId: req.params.productId
-    //   }
-    // })
     const updated = await Order.findAll({
       where: {
         id: req.params.userId,
@@ -129,6 +116,7 @@ router.delete('/:userId/pending-order/:productId', async (req, res, next) => {
       }
     })
     await order_product[0].destroy()
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }

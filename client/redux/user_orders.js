@@ -12,7 +12,7 @@ const DELETE_ORDER = 'DELETE_ORDER'
 const getPendingOrders = pendingOrders => {
   return {
     type: GET_PENDING_ORDERS,
-    pendingOrders //object
+    pendingOrders
   }
 }
 
@@ -44,7 +44,6 @@ export const fetchPendingOrders = userId => {
   return async dispatch => {
     try {
       const response = await axios.get(`/api/users/${userId}/pending-order`)
-      // console.log('here is the axios data: ',response)
       dispatch(getPendingOrders(response.data))
     } catch (error) {
       console.log(error)
@@ -89,7 +88,7 @@ export const removeOrder = (userId, productId) => {
       const {data} = await axios.delete(
         `/api/users/${userId}/pending-order/${productId}`
       )
-      dispatch(deleteOrder(data))
+      dispatch(deleteOrder(productId))
     } catch (error) {
       console.log(error)
     }
@@ -97,36 +96,23 @@ export const removeOrder = (userId, productId) => {
 }
 
 //REDUCER
-const initialState = {} // pendingOrder object
+const initialState = {}
 export default function pendingOrdersReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PENDING_ORDERS:
-      // console.log(action.getPendingOrders)
       return action.pendingOrders
     case ADD_ORDER:
       return {...state, products: [...state.products, action.newOrder]}
     case EDIT_ORDER:
-      //{
-      // console.log('state.products here!: ',state.produts)
-      // console.log('order.id here!: ', order.id)
-      // console.log('action.productid here!: ', action.productId)
-
       return {
         ...state,
         products: [
-          ...state.products.filter(order => order.id !== action.productId),
+          ...state.products.filter(
+            order => order.id !== action.pendingOrder.id
+          ),
           action.pendingOrder
         ]
       }
-    // const foundOrder = state.products.findIndex
-    // ((element) => {
-    //   return element.id === action.productId;
-    // });
-    // const newOrder = [...state.products];
-    // newOrder.splice(foundOrder, 1, action.productId);
-    // console.log('state.products: ',state.products)
-    // return {...state, products: newOrder};
-    //}
     case DELETE_ORDER:
       return {
         ...state,
