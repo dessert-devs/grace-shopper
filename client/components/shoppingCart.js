@@ -37,6 +37,7 @@ class ShoppingCart extends Component {
                     product={order}
                   />
                   <button
+                    type="submit"
                     onClick={() =>
                       this.props.deleteOrder(
                         this.props.match.params.userId,
