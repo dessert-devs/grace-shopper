@@ -6,11 +6,11 @@ const Order_Product = db.define('order_product', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  price_per_item: {
-    type: Sequelize.DECIMAL(10, 2)
+  price: {
+    type: Sequelize.INTEGER
   },
   total_price: {
-    type: Sequelize.DECIMAL(10, 2)
+    type: Sequelize.INTEGER
   }
 })
 

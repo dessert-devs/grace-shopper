@@ -2,7 +2,6 @@
 
 const db = require('../server/db')
 const {User, Product, Order, Order_Product} = require('../server/db/models')
-
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
@@ -26,10 +25,46 @@ async function seed() {
   ])
 
   const products = await Promise.all([
-    Product.create({name: 'cupcake'}),
-    Product.create({name: 'donut'}),
-    Product.create({name: 'cake'}),
-    Product.create({name: 'cookie'})
+    Product.create({
+      name: 'Rainbow Cake',
+      price: 4599,
+      img: '/dessert-images/RainbowCake200x200.jpg',
+      description: 'a cake that is rainbow',
+      category: 'cake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Chocolate Chip Cookies',
+      price: 700,
+      img: '/dessert-images/ChocChipCookie_200x200.jpg',
+      description: 'a cookie with chocolate chips',
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Donut',
+      price: 500,
+      img: '/dessert-images/Donut_200x200.jpg',
+      description: 'A Strawberry Frosted Donut!',
+      category: 'pastry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Cupcake',
+      price: 300,
+      img: '/dessert-images/ChocCupcake_200x200.jpg',
+      description: 'A Yummy Chocolate Frosted Cupcake!',
+      category: 'cupcake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Valentines Bundle',
+      price: 7000,
+      img: '/dessert-images/ValentinesBundle_200x200.jpg',
+      description: "A Bundle of our Cutest Valentine's Day Desserts!",
+      category: 'seasonal',
+      inventoryQty: 30
+    })
   ])
 
   const orders = await Promise.all([
@@ -42,42 +77,29 @@ async function seed() {
     Order_Product.create({
       orderId: 1,
       productId: 1,
-      amount: 5,
-      price_per_item: 5.0,
-      total_price: 25.0
+      amount: 5
     }),
     Order_Product.create({
       orderId: 1,
       productId: 2,
-      amount: 4,
-      price_per_item: 4.0,
-      total_price: 8.0
+      amount: 4
     }),
     Order_Product.create({
       orderId: 1,
       productId: 3,
-      amount: 5,
-      price_per_item: 4.0,
-      total_price: 12.0
+      amount: 5
     }),
     Order_Product.create({
       orderId: 1,
       productId: 4,
-      amount: 4,
-      price_per_item: 5.0,
-      total_price: 20.0
+      amount: 4
     }),
     Order_Product.create({
       orderId: 3,
       productId: 3,
-      amount: 2,
-      price_per_item: 2.0,
-      total_price: 4.0
+      amount: 2
     })
   ])
-
-  // console.log(`seeded ${users.length} users`)
-  // console.log(`seeded successfully`)
 }
 
 // We've separated the `seed` function from the `runSeed` function.

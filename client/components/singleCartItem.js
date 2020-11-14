@@ -8,7 +8,7 @@ class SingleCartItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: -1
+      value: this.props.product.order_product.amount
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,6 +28,10 @@ class SingleCartItem extends Component {
   }
 
   render() {
+    function displayPrice(num) {
+      let exponent = Math.pow(10, -2)
+      return num * exponent
+    }
     function formatInput(e) {
       let checkIfNum
       if (e.key !== undefined) {
@@ -47,7 +51,7 @@ class SingleCartItem extends Component {
     }
     return (
       <div>
-        <img className="imgs" src={this.props.product.imageUrl} />
+        <img className="imgs" src={this.props.product.img} />
         <h2>{this.props.product.name}</h2>
         <h2>amount:</h2>
         <form onSubmit={this.handleSubmit(this.props.product.id)}>
@@ -58,11 +62,7 @@ class SingleCartItem extends Component {
               onKeyDown={evt => {
                 formatInput(evt)
               }}
-              value={
-                this.state.value === -1
-                  ? this.props.product.order_product.amount
-                  : this.state.value
-              }
+              value={this.state.value}
               onChange={this.handleChange}
             />
           </label>
@@ -70,9 +70,13 @@ class SingleCartItem extends Component {
         </form>
 
         <h2>price:</h2>
-        <h4>{this.props.product.order_product.price_per_item}</h4>
+        <h4>${displayPrice(this.props.product.price)}</h4>
         <h2>total:</h2>
-        <h4>{this.props.product.order_product.total_price}</h4>
+        <h4>
+          ${displayPrice(
+            this.props.product.price * this.props.product.order_product.amount
+          )}
+        </h4>
       </div>
     )
   }
