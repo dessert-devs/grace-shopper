@@ -1,16 +1,27 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
-const {Product} = require('../server/db/models')
-
+const {User, Product, Order, Order_Product} = require('../server/db/models')
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+    User.create({email: 'cody@email.com', password: '123', user_type: 'admin'}),
+    User.create({
+      email: 'murphy@email.com',
+      password: '123',
+      user_type: 'user'
+    }),
+    User.create({
+      email: 'mikyla@email.com',
+      password: '3455'
+    }),
+    User.create({
+      email: 'josephine@email.com',
+      password: '3456',
+      user_type: 'user'
+    })
   ])
 
   const products = await Promise.all([
@@ -56,9 +67,39 @@ async function seed() {
     })
   ])
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${products.length} products`)
-  console.log(`seeded successfully`)
+  const orders = await Promise.all([
+    Order.create({userId: 1}),
+    Order.create({pending: false, userId: 2}),
+    Order.create({pending: true, userId: 3})
+  ])
+
+  const order_products = await Promise.all([
+    Order_Product.create({
+      orderId: 1,
+      productId: 1,
+      amount: 5
+    }),
+    Order_Product.create({
+      orderId: 1,
+      productId: 2,
+      amount: 4
+    }),
+    Order_Product.create({
+      orderId: 1,
+      productId: 3,
+      amount: 5
+    }),
+    Order_Product.create({
+      orderId: 1,
+      productId: 4,
+      amount: 4
+    }),
+    Order_Product.create({
+      orderId: 3,
+      productId: 3,
+      amount: 2
+    })
+  ])
 }
 
 // We've separated the `seed` function from the `runSeed` function.
