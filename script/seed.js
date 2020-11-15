@@ -77,27 +77,32 @@ async function seed() {
     Order_Product.create({
       orderId: 1,
       productId: 1,
-      amount: 5
+      amount: 5,
+      price: 4599
     }),
     Order_Product.create({
       orderId: 1,
       productId: 2,
-      amount: 4
+      amount: 4,
+      price: 700
     }),
     Order_Product.create({
-      orderId: 1,
+      orderId: 2,
       productId: 3,
-      amount: 5
+      amount: 5,
+      price: 500
     }),
     Order_Product.create({
       orderId: 1,
       productId: 4,
-      amount: 4
+      amount: 4,
+      price: 300
     }),
     Order_Product.create({
       orderId: 3,
       productId: 3,
-      amount: 2
+      amount: 2,
+      price: 500
     })
   ])
 }

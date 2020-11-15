@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchOneProduct} from '../store/singleproduct.js'
+import {fetchOneProduct, postOrder} from '../store/singleproduct.js'
 
 class OneProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
       value: 0
+      // newOrder: {
+      //   productId: productId,
+
+      // }
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -71,15 +75,21 @@ class OneProduct extends Component {
 
 const mapState = state => {
   return {
-    singleproduct: state.singleproduct
+    singleproduct: state.singleproduct,
+    newOrder: state.newOrder
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getOneProduct: id => dispatch(fetchOneProduct(id))
+    getOneProduct: id => dispatch(fetchOneProduct(id)),
+    addNewOrder: (newOrder, userId) => {
+      dispatch(postOrder(newOrder, userId))
+    }
   }
 }
+//order_products: newOrder = { amount, productId, orderId, price, total_price }
+//order: {id, pending, userId}
 
 export default connect(mapState, mapDispatch)(OneProduct)
 

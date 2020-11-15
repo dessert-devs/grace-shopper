@@ -6,16 +6,16 @@ module.exports = router
 =========For User============
 
 Set Up Route to User Order
-- get route --> /api/user/:userId/pending-order
+- get route --> /api/users/:userId/pending-order
        - gets users pending order (current cart)
 
-- post route --> /api/user/:userId/pending-order
+- post route --> /api/users/:userId/pending-order
       - user adds to cart
 
-- put route  --> /api/user/:userId/pending-order
+- put route  --> /api/users/:userId/pending-order
       - user updates cart quantity
 
-- delete route --> /api/user/:userId/pending-order
+- delete route --> /api/users/:userId/pending-order
       - user deletes smth from cart
 */
 
@@ -47,19 +47,18 @@ router.post('/:userId/pending-order', async (req, res, next) => {
       where: {userId: req.params.userId, pending: true}
     })
     const order_id = addedCart[0].dataValues.id
-    console.log(order_id)
-    const {amount, price_per_item, total_price, product_name} = req.body
+    const {amount, product_name} = req.body
     const product = await Product.findAll({
       where: {
         name: product_name
       }
     })
+    const product_price = product[0].dataValues.price
     const product_id = product[0].dataValues.id
     const addedDetail = await Order_Product.create({
       orderId: order_id,
       amount,
-      price_per_item,
-      total_price,
+      price: product_price,
       productId: product_id
     })
     res.json(addedDetail)
@@ -83,6 +82,7 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
       }
     })
     await order_product[0].update(req.body)
+
     const updated = await Order.findAll({
       where: {
         id: req.params.userId,
@@ -98,7 +98,6 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
         }
       ]
     })
-    console.log(updated)
     res.json(updated[0].products[0])
   } catch (error) {
     next(error)
