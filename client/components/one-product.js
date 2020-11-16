@@ -9,7 +9,7 @@ import {
   fetchProdOrder,
   updatePendingOrder
 } from '../redux/user_orders.js'
-import getGuestOrder from '../store/guestOrder'
+import {addGuestOrder} from '../store/guestOrder'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ class OneProduct extends Component {
           )
         }
       } else {
-        this.props.getGuestOrder({
+        this.props.postGuestOrder({
           product_id,
           price,
           name,
@@ -135,7 +135,7 @@ const mapDispatch = dispatch => {
       dispatch(fetchProdOrder(userId, productId)),
     updateOrder: (pendingOrder, userId, productId) =>
       dispatch(updatePendingOrder(pendingOrder, userId, productId)),
-    getGuestOrder: product => dispatch(getGuestOrder(product))
+    postGuestOrder: product => dispatch(addGuestOrder(product))
   }
 }
 

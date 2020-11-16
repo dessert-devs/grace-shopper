@@ -8,15 +8,15 @@ class ShoppingCart extends Component {
   constructor() {
     super()
   }
-  // componentDidMount() {
-  //   //(this.props.match.params.userId ? () : ())
-
-  //   this.props.getPendingOrders(this.props.match.params.userId)
-  // }
+  componentDidMount() {
+    if (this.props.match.params.userId) {
+      this.props.getPendingOrders(this.props.match.params.userId)
+    }
+  }
 
   render() {
     const {pendingOrders} = this.props
-    console.log('RENDER shopping cart props', this.props)
+    console.log('RENDER shopping cart guest order', this.props.guestOrder)
     return (
       <div>
         <h1>Here's your Shopping Cart</h1>
@@ -54,17 +54,35 @@ class ShoppingCart extends Component {
                   </div>
                 )
               })
-          : this.state.singleproduct.name}
+          : this.props.guestOrder.map(order => {
+              return (
+                <div key={order.id}>
+                  <SingleCartItem product={order} />
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      this.props.deleteOrder(
+                        this.props.match.params.userId,
+                        order.id
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
+            })}
       </div>
     )
   }
 }
 
 const mapState = state => {
-  console.log('shopping state map state', state)
+  //console.log('shopping state map state', state)
   return {
     pendingOrders: state.pendingOrders,
-    singleproduct: state.singleproduct
+    singleproduct: state.singleproduct,
+    guestOrder: state.guestOrder
   }
 }
 
