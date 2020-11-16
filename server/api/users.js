@@ -36,6 +36,30 @@ router.get('/:userId/pending-order', async (req, res, next) => {
   }
 })
 
+//check whether userid+productid combination exists in order_product table
+router.get('/:userId/pending-order/:productId', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {
+        userId: req.params.userId,
+        pending: true
+      },
+      include: [
+        {
+          model: Product,
+          where: {
+            id: req.params.productId
+          },
+          required: true
+        }
+      ]
+    })
+    res.json(orders[0])
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/:userId/pending-order', async (req, res, next) => {
   try {
     // if(req.body.firstName===undefined || req.body.lastName === undefined || req.body.email===undefined){
@@ -48,17 +72,18 @@ router.post('/:userId/pending-order', async (req, res, next) => {
     })
     const order_id = addedCart[0].dataValues.id
     console.log(order_id)
-    const {amount, price_per_item, total_price, product_name} = req.body
-    const product = await Product.findAll({
-      where: {
-        name: product_name
-      }
-    })
-    const product_id = product[0].dataValues.id
+    const {amount, price, total_price, product_id} = req.body
+    // console.log('amount: ', )
+    // const product = await Product.findAll({
+    //   where: {
+    //     name: product_name
+    //   }
+    // })
+    // const product_id = product[0].dataValues.id
     const addedDetail = await Order_Product.create({
       orderId: order_id,
       amount,
-      price_per_item,
+      price,
       total_price,
       productId: product_id
     })
@@ -73,7 +98,7 @@ router.post('/:userId/pending-order', async (req, res, next) => {
 router.put('/:userId/pending-order/:productId', async (req, res, next) => {
   try {
     const order = await Order.findAll({
-      where: {userId: req.params.userId}
+      where: {userId: req.params.userId, pending: true}
     })
     const order_id = order[0].dataValues.id
     const order_product = await Order_Product.findAll({
@@ -98,7 +123,6 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
         }
       ]
     })
-    console.log(updated)
     res.json(updated[0].products[0])
   } catch (error) {
     next(error)

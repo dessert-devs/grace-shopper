@@ -73,33 +73,33 @@ async function seed() {
     Order.create({pending: true, userId: 3})
   ])
 
-  const order_products = await Promise.all([
-    Order_Product.create({
-      orderId: 1,
-      productId: 1,
-      amount: 5
-    }),
-    Order_Product.create({
-      orderId: 1,
-      productId: 2,
-      amount: 4
-    }),
-    Order_Product.create({
-      orderId: 1,
-      productId: 3,
-      amount: 5
-    }),
-    Order_Product.create({
-      orderId: 1,
-      productId: 4,
-      amount: 4
-    }),
-    Order_Product.create({
-      orderId: 3,
-      productId: 3,
-      amount: 2
-    })
-  ])
+  // const order_products = await Promise.all([
+  //   Order_Product.create({
+  //     orderId: 1,
+  //     productId: 1,
+  //     amount: 5
+  //   }),
+  //   Order_Product.create({
+  //     orderId: 1,
+  //     productId: 2,
+  //     amount: 4
+  //   }),
+  //   Order_Product.create({
+  //     orderId: 1,
+  //     productId: 3,
+  //     amount: 5
+  //   }),
+  //   Order_Product.create({
+  //     orderId: 1,
+  //     productId: 4,
+  //     amount: 4
+  //   }),
+  //   Order_Product.create({
+  //     orderId: 3,
+  //     productId: 3,
+  //     amount: 2
+  //   })
+  // ])
 }
 
 // We've separated the `seed` function from the `runSeed` function.

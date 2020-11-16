@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/singleproduct.js'
+import {
+  postOrder,
+  fetchProdOrder,
+  updatePendingOrder
+} from '../redux/user_orders.js'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -17,11 +22,27 @@ class OneProduct extends Component {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit(event) {
+  handleSubmit(product_id, userId, price) {
     // README: add route to update db with the amount variable
     let amount = Number(this.state.value)
-    alert('A value was submitted: ' + amount)
-    event.preventDefault()
+    let total_price = price * amount
+    return async event => {
+      event.preventDefault()
+      await this.props.checkProdExists(userId, product_id)
+      if (this.props.foundProd) {
+        let orig_amount = this.props.foundProd.products[0].order_product.amount
+        this.props.updateOrder(
+          {amount: amount + orig_amount},
+          userId,
+          product_id
+        )
+      } else {
+        this.props.addShoppingCart(
+          {amount, price, total_price, product_id},
+          userId
+        )
+      }
+    }
   }
 
   componentDidMount() {
@@ -50,7 +71,13 @@ class OneProduct extends Component {
         <h5>{this.props.singleproduct.name}</h5>
         <h5>${displayPrice(this.props.singleproduct.price)}</h5>
         <h5>{this.props.singleproduct.description}</h5>
-        <form onSubmit={this.handleSubmit}>
+        <form
+          onSubmit={this.handleSubmit(
+            this.props.singleproduct.id,
+            this.props.match.params.user_id,
+            this.props.singleproduct.price
+          )}
+        >
           <label>
             <input
               type="number"
@@ -71,13 +98,20 @@ class OneProduct extends Component {
 
 const mapState = state => {
   return {
-    singleproduct: state.singleproduct
+    singleproduct: state.singleproduct,
+    foundProd: state.pendingOrders
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getOneProduct: id => dispatch(fetchOneProduct(id))
+    getOneProduct: id => dispatch(fetchOneProduct(id)),
+    addShoppingCart: (newOrder, userId) =>
+      dispatch(postOrder(newOrder, userId)),
+    checkProdExists: (userId, productId) =>
+      dispatch(fetchProdOrder(userId, productId)),
+    updateOrder: (pendingOrder, userId, productId) =>
+      dispatch(updatePendingOrder(pendingOrder, userId, productId))
   }
 }
 
