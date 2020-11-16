@@ -50,33 +50,38 @@ class SingleCartItem extends Component {
       return checkIfNum && e.preventDefault()
     }
     return (
-      <div>
-        <img className="imgs" src={this.props.product.img} />
-        <h2>{this.props.product.name}</h2>
-        <h2>amount:</h2>
-        <form onSubmit={this.handleSubmit(this.props.product.id)}>
-          <label>
-            <input
-              type="number"
-              min="1"
-              onKeyDown={evt => {
-                formatInput(evt)
-              }}
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Update" />
-        </form>
+      <div id="single-cart-product">
+        <div id="image-div">
+          <img id="cart-img" src={this.props.product.img} />
+        </div>
+        <div id="cart-single-info">
+          <h2>{this.props.product.name}</h2>
+          <h2>amount:</h2>
+          <form onSubmit={this.handleSubmit(this.props.product.id)}>
+            <label>
+              <input
+                type="number"
+                min="1"
+                onKeyDown={evt => {
+                  formatInput(evt)
+                }}
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </label>
+            <input type="submit" value="Update" />
+          </form>
 
-        <h2>price:</h2>
-        <h4>${displayPrice(this.props.product.price)}</h4>
-        <h2>total:</h2>
-        <h4>
-          ${displayPrice(
-            this.props.product.price * this.props.product.order_product.amount
-          )}
-        </h4>
+          <h2>price:</h2>
+          <h4>${displayPrice(this.props.product.price)}</h4>
+          <h2>total:</h2>
+          <h4>
+            $
+            {displayPrice(
+              this.props.product.price * this.props.product.order_product.amount
+            )}
+          </h4>
+        </div>
       </div>
     )
   }

@@ -19,21 +19,22 @@ class AllProducts extends React.Component {
         {this.props.products.map(element => {
           return (
             <div key={element.id} id="single-product">
-              <img src={element.img} id="img" />
-              <div id="product-info">
-                {this.props.match.params.user_id ? (
-                  <Link
-                    to={`/home/all-products/${
-                      this.props.match.params.user_id
-                    }/${element.id}`}
-                  >
-                    {element.name}
-                  </Link>
-                ) : (
-                  <Link to={`/all-products/${element.id}`}>{element.name}</Link>
-                )}
-                --${displayPrice(element.price)}--
-              </div>
+              {this.props.match.params.user_id ? (
+                <Link
+                  to={`/home/all-products/${this.props.match.params.user_id}/${
+                    element.id
+                  }`}
+                >
+                  <img src={element.img} id="img" />
+                  <div id="product-info">{element.name}</div>
+                </Link>
+              ) : (
+                <Link to={`/all-products/${element.id}`}>
+                  <img src={element.img} id="img" />
+                  <div id="product-info">{element.name}</div>
+                </Link>
+              )}
+              <div id="product-info">--${displayPrice(element.price)}--</div>
             </div>
           )
         })}

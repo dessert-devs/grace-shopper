@@ -16,8 +16,8 @@ class ShoppingCart extends Component {
   render() {
     const {pendingOrders} = this.props
     return (
-      <div>
-        <h1>Here's your Shopping Cart</h1>
+      <div id="all-cart-products">
+        <h1>Here's Your Shopping Cart</h1>
         {pendingOrders.products &&
           pendingOrders.products
             .sort((a, b) => {
@@ -31,12 +31,13 @@ class ShoppingCart extends Component {
             })
             .map(order => {
               return (
-                <div key={order.id}>
+                <div key={order.id} id="all-cart-products">
                   <SingleCartItem
                     userId={this.props.match.params.userId}
                     product={order}
                   />
                   <button
+                    type="submit"
                     onClick={() =>
                       this.props.deleteOrder(
                         this.props.match.params.userId,

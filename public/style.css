@@ -7,6 +7,10 @@ body {
   width: 100vw;
 }
 
+h2 {
+  font-size: 20px;
+}
+
 a {
   text-decoration: none;
   color: rgb(128, 0, 49);
@@ -14,6 +18,13 @@ a {
 
 label {
   display: block;
+}
+
+.title {
+  font-family: Comic Sans MS, Comic Sans, cursive;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: rgb(128, 0, 49);
+  color: #f8b4ed;
 }
 
 .imgs {
@@ -36,20 +47,56 @@ form div {
   display: inline-block;
 }
 
+button {
+  padding: 0.5em 1em;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  background-color: #d6627a;
+  border-radius: 8px;
+}
+
+button:hover {
+  color: white;
+}
+
 #all-products {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
 }
 
+#all-cart-products {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #single-product {
   padding: 20px;
+}
+
+#single-cart-product {
+  display: flex;
 }
 
 #img {
   border-radius: 13px;
   border-color: rgb(222, 255, 253);
   border-style: solid;
+}
+
+#cart-img {
+  border-radius: 13px;
+  border-width: 3px;
+  border-color: rgb(222, 255, 253);
+  border-style: solid;
+  width: 75px;
+  height: 75px;
 }
 
 #product-info {
