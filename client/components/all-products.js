@@ -19,6 +19,7 @@ class AllProducts extends React.Component {
         {this.props.products.map(element => {
           return (
             <div key={element.id} id="single-product">
+
               <img src={element.img} id="img" />
               <div id="product-info">
                 {this.props.match.params.user_id ? (
@@ -35,6 +36,7 @@ class AllProducts extends React.Component {
                   </Link>
                 )}
                 <h5>${displayPrice(element.price)}</h5>
+
               </div>
             </div>
           )
