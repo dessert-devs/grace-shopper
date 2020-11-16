@@ -127,7 +127,7 @@ export default function pendingOrdersReducer(state = initialState, action) {
       return action.prodOrder
     case ADD_ORDER:
       // return {...state, products: [...state.products, action.newOrder]}
-      return {...state, products: [...state.products, action.newOrder]}
+      return action.newOrder
     case EDIT_ORDER:
       return {
         ...state,

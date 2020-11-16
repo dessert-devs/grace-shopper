@@ -108,9 +108,10 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
       }
     })
     await order_product[0].update(req.body)
+
     const updated = await Order.findAll({
       where: {
-        id: req.params.userId,
+        userId: req.params.userId,
         pending: true
       },
       include: [
@@ -118,11 +119,11 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
           model: Product,
           where: {
             id: req.params.productId
-          },
-          required: true
+          }
         }
       ]
     })
+    console.log('result: ', updated)
     res.json(updated[0].products[0])
   } catch (error) {
     next(error)
@@ -131,7 +132,9 @@ router.put('/:userId/pending-order/:productId', async (req, res, next) => {
 
 router.delete('/:userId/pending-order/:productId', async (req, res, next) => {
   try {
-    const order = await Order.findAll({where: {userId: req.params.userId}})
+    const order = await Order.findAll({
+      where: {userId: req.params.userId, pending: true}
+    })
     const order_id = order[0].dataValues.id
     const order_product = await Order_Product.findAll({
       where: {
