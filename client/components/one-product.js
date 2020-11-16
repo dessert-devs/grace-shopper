@@ -1,3 +1,6 @@
+/*eslint-disable */
+// ^^^^ TAKE OUT
+
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/singleproduct.js'
@@ -6,6 +9,7 @@ import {
   fetchProdOrder,
   updatePendingOrder
 } from '../redux/user_orders.js'
+import getGuestOrder from '../store/guestOrder'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -13,7 +17,6 @@ class OneProduct extends Component {
     this.state = {
       value: 0
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -22,34 +25,53 @@ class OneProduct extends Component {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit(product_id, userId, price) {
-    // README: add route to update db with the amount variable
+  handleSubmit(product_id, userId, price, name) {
     let amount = Number(this.state.value)
     let total_price = price * amount
     return async event => {
       event.preventDefault()
-      await this.props.checkProdExists(userId, product_id)
-      if (this.props.foundProd) {
-        let orig_amount = this.props.foundProd.products[0].order_product.amount
-        this.props.updateOrder(
-          {amount: amount + orig_amount},
-          userId,
-          product_id
-        )
+      if (userId) {
+        await this.props.checkProdExists(userId, product_id)
+        if (this.props.foundProd) {
+          let orig_amount = this.props.foundProd.products[0].order_product
+            .amount
+          this.props.updateOrder(
+            {amount: amount + orig_amount},
+            userId,
+            product_id
+          )
+        } else {
+          this.props.addShoppingCart(
+            {amount, price, total_price, product_id},
+            userId
+          )
+        }
       } else {
-        this.props.addShoppingCart(
-          {amount, price, total_price, product_id},
-          userId
-        )
+        this.props.getGuestOrder({
+          product_id,
+          price,
+          name,
+          amount,
+          total_price
+        })
       }
     }
   }
+  // else{
+  //   // this.setState({
+  //   //   price: price
+  //   // })
+  //   // console.log("PROPS NAME HANDLE SUBMIT", this.props.singleproduct.name)
+
+  //   alert('Please sign up or log in in order to add items to shopping cart!')
 
   componentDidMount() {
     this.props.getOneProduct(this.props.match.params.productId)
   }
 
   render() {
+    //console.log("PROPS RENDER", this.props)
+
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
       return num * exponent
@@ -75,7 +97,8 @@ class OneProduct extends Component {
           onSubmit={this.handleSubmit(
             this.props.singleproduct.id,
             this.props.match.params.user_id,
-            this.props.singleproduct.price
+            this.props.singleproduct.price,
+            this.props.singleproduct.name
           )}
         >
           <label>
@@ -111,10 +134,9 @@ const mapDispatch = dispatch => {
     checkProdExists: (userId, productId) =>
       dispatch(fetchProdOrder(userId, productId)),
     updateOrder: (pendingOrder, userId, productId) =>
-      dispatch(updatePendingOrder(pendingOrder, userId, productId))
+      dispatch(updatePendingOrder(pendingOrder, userId, productId)),
+    getGuestOrder: product => dispatch(getGuestOrder(product))
   }
 }
 
 export default connect(mapState, mapDispatch)(OneProduct)
-
-// export default OneProduct;
