@@ -15,15 +15,17 @@ class AllProducts extends React.Component {
     }
 
     return (
-      <div>
+      <div id="all-products">
         {this.props.products.map(element => {
           return (
-            <div key={element.id}>
-              <img src={element.img} />
-              <Link to={`/all-products/${element.id}`}>
-                <h3>{element.name}</h3>
-              </Link>
-              <h5>${displayPrice(element.price)}</h5>
+            <div key={element.id} id="single-product">
+              <div>
+                <img src={element.img} id="img" />
+              </div>
+              <div id="product-info">
+                <Link to={`/all-products/${element.id}`}>{element.name}</Link>
+                -- ${displayPrice(element.price)} --
+              </div>
             </div>
           )
         })}
