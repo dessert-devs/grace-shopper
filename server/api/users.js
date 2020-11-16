@@ -2,6 +2,8 @@ const router = require('express').Router()
 const {User, Product, Order, Order_Product} = require('../db/models')
 module.exports = router
 
+// For future consideration: seems like you might want a separate router for carts / pending-order. You can nest it inside of this router if you want, you just have to set the "mergeParams" property if you want to access the userId.
+
 /*
 =========For User============
 
@@ -35,6 +37,8 @@ router.get('/:userId/pending-order', async (req, res, next) => {
     next(error)
   }
 })
+
+// how are we using this below route? Logically it feels more like a Sequelize class or instance method more so than an expose route. Thoughts?
 
 //check whether userid+productid combination exists in order_product table
 router.get('/:userId/pending-order/:productId', async (req, res, next) => {
@@ -93,6 +97,9 @@ router.post('/:userId/pending-order', async (req, res, next) => {
     next(err)
   }
 })
+
+// are there some custom sequelize class or instance methods that we can write to take some logic out of the route?
+// eg. findCartByUser, getCompleteCart
 
 //we need the front end to have product Id
 router.put('/:userId/pending-order/:productId', async (req, res, next) => {

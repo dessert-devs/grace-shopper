@@ -28,6 +28,7 @@ class SingleCartItem extends Component {
   }
 
   render() {
+    // these seem like reusable functions that could live in a central location and be used across many components
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
       return num * exponent

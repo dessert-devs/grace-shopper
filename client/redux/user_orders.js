@@ -1,6 +1,8 @@
 import axios from 'axios'
 import thunkMiddleware from 'redux-thunk'
 
+// should this file get moved to store folder?
+
 //Action Type
 
 const GET_PENDING_ORDERS = 'GET_PENDING_ORDERS'
