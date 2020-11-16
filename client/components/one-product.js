@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchOneProduct, postOrder} from '../store/singleproduct.js'
+import {fetchOneProduct} from '../store/singleproduct.js'
+import {postOrder} from '../redux/user_orders'
 
 class OneProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: 0
-      // newOrder: {
-      //   productId: productId,
-
-      // }
+      amount: 0
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -18,14 +15,18 @@ class OneProduct extends Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value})
+    let amount = Number(this.state.value)
+    this.setState({amount: event.target.value})
   }
 
-  handleSubmit(event) {
+  handleSubmit(id, price) {
     // README: add route to update db with the amount variable
     let amount = Number(this.state.value)
-    alert('A value was submitted: ' + amount)
-    event.preventDefault()
+    let total_price = price * amount
+    return event => {
+      event.preventDefault()
+      this.props.addNewOrder({amount: amount, id, price, total_price}, 1)
+    }
   }
 
   componentDidMount() {
@@ -54,7 +55,12 @@ class OneProduct extends Component {
         <h5>{this.props.singleproduct.name}</h5>
         <h5>${displayPrice(this.props.singleproduct.price)}</h5>
         <h5>{this.props.singleproduct.description}</h5>
-        <form onSubmit={this.handleSubmit}>
+        <form
+          onSubmit={this.handleSubmit(
+            this.props.singleproduct.id,
+            this.props.singleproduct.price
+          )}
+        >
           <label>
             <input
               type="number"
@@ -76,7 +82,7 @@ class OneProduct extends Component {
 const mapState = state => {
   return {
     singleproduct: state.singleproduct,
-    newOrder: state.newOrder
+    pendingOrders: state.pendingOrders
   }
 }
 

@@ -31,18 +31,25 @@ class Routes extends Component {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/all-products" component={AllProducts} />
         <Route exact path="/all-products/:productId" component={OneProduct} />
-        <Route exact path="/shopping-cart" component={ShoppingCart} />
-        <Route exact path="/shopping-cart" component={ShoppingCart} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/singleCartItem" component={SingleCartItem} />
+            <Route exact path="/users/:userId/user-home" component={UserHome} />
             <Route
               exact
               path="/users/:userId/shopping-cart"
               component={ShoppingCart}
             />
-            <Route exact path="/user-home" component={UserHome} />
+            <Route
+              exact
+              path="/users/:userId/all-products"
+              component={AllProducts}
+            />
+            <Route
+              exact
+              path="/users/:userId/all-products/:productId"
+              component={OneProduct}
+            />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

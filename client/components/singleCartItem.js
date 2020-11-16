@@ -51,7 +51,6 @@ class SingleCartItem extends Component {
     }
     return (
       <div>
-        <h1>WELCOME TO YOUR CART, JOSEPHINE!</h1>
         <img className="imgs" src={this.props.product.img} />
         <h2>{this.props.product.name}</h2>
         <h2>amount:</h2>

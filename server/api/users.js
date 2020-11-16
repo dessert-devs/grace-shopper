@@ -47,19 +47,13 @@ router.post('/:userId/pending-order', async (req, res, next) => {
       where: {userId: req.params.userId, pending: true}
     })
     const order_id = addedCart[0].dataValues.id
-    const {amount, product_name} = req.body
-    const product = await Product.findAll({
-      where: {
-        name: product_name
-      }
-    })
-    const product_price = product[0].dataValues.price
-    const product_id = product[0].dataValues.id
+    const {amount, productId, price, total_price} = req.body
     const addedDetail = await Order_Product.create({
       orderId: order_id,
       amount,
-      price: product_price,
-      productId: product_id
+      price: price,
+      total_price,
+      productId
     })
     res.json(addedDetail)
     //-------------------------------------

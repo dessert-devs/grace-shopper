@@ -14,15 +14,23 @@ class AllProducts extends React.Component {
       return num * exponent
     }
 
+    let userId = this.props.match.params.userId
+
     return (
       <div>
         {this.props.products.map(element => {
           return (
             <div key={element.id}>
               <img src={element.img} />
-              <Link to={`/all-products/${element.id}`}>
-                <h3>{element.name}</h3>
-              </Link>
+              {this.props.match.params.userId ? (
+                <Link to={`/users/${userId}/all-products/${element.id}`}>
+                  <h3>{element.name}</h3>
+                </Link>
+              ) : (
+                <Link to={`/all-products/${element.id}`}>
+                  <h3>{element.name}</h3>
+                </Link>
+              )}
               <h5>${displayPrice(element.price)}</h5>
             </div>
           )
