@@ -17,7 +17,7 @@ class OneProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: 0
+      value: 1
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
