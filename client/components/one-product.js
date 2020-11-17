@@ -3,7 +3,7 @@
 
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchOneProduct} from '../store/singleproduct.js'
+import {fetchOneProduct, loadingProduct} from '../store/singleproduct.js'
 import {
   postOrder,
   fetchProdOrder,
@@ -12,6 +12,7 @@ import {
 import {addGuestOrder, updateGuestOrder} from '../store/guestOrder'
 import {element} from 'prop-types'
 import {displayPrice, formatInput} from '../utilityfunc'
+import Loader from 'react-loader-spinner'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -28,67 +29,73 @@ class OneProduct extends Component {
   }
 
   handleSubmit(product_id, userId, price, name, img) {
-    let amount = Number(this.state.value)
-    let total_price = price * amount
-    return async event => {
-      event.preventDefault()
-      if (userId) {
-        await this.props.checkProdExists(userId, product_id)
-        if (this.props.foundProd) {
-          let orig_amount = this.props.foundProd.products[0].order_product
-            .amount
-          this.props.updateOrder(
-            {
-              amount: amount + orig_amount,
-              total_price: (amount + orig_amount) * price
-            },
-            userId,
-            product_id
-          )
+    if (this.state.value !== '') {
+      let amount = Number(this.state.value)
+      let total_price = price * amount
+      return async event => {
+        event.preventDefault()
+        if (userId) {
+          await this.props.checkProdExists(userId, product_id)
+          if (this.props.foundProd) {
+            let orig_amount = this.props.foundProd.products[0].order_product
+              .amount
+            this.props.updateOrder(
+              {
+                amount: amount + orig_amount,
+                total_price: (amount + orig_amount) * price
+              },
+              userId,
+              product_id
+            )
+          } else {
+            this.props.addShoppingCart(
+              {amount, price, total_price, product_id},
+              userId
+            )
+          }
         } else {
-          this.props.addShoppingCart(
-            {amount, price, total_price, product_id},
-            userId
-          )
-        }
-      } else {
-        if (
-          this.props.guestOrder
-            .map(elm => {
-              return elm.product_id
-            })
-            .includes(product_id)
-        ) {
-          let orig_guest_amount = this.props.guestOrder.filter(
-            elm => elm.product_id === product_id
-          )[0].amount
-          console.log('original_guest_amount: ', orig_guest_amount)
-          let updated_amount = orig_guest_amount + amount
-          console.log('updated amount: ', updated_amount)
+          if (
+            this.props.guestOrder
+              .map(elm => {
+                return elm.product_id
+              })
+              .includes(product_id)
+          ) {
+            let orig_guest_amount = this.props.guestOrder.filter(
+              elm => elm.product_id === product_id
+            )[0].amount
+            console.log('original_guest_amount: ', orig_guest_amount)
+            let updated_amount = orig_guest_amount + amount
+            console.log('updated amount: ', updated_amount)
 
-          let updated_total_price = updated_amount * price
-          console.log('i returted true')
-          this.props.editGuestOrder(
-            {
-              amount: updated_amount,
+            let updated_total_price = updated_amount * price
+            this.props.editGuestOrder(
+              {
+                amount: updated_amount,
+                product_id,
+                price,
+                name,
+                total_price: updated_total_price,
+                img
+              },
+              product_id
+            )
+          } else {
+            this.props.postGuestOrder({
               product_id,
               price,
               name,
-              total_price: updated_total_price,
+              amount,
+              total_price,
               img
-            },
-            product_id
-          )
-        } else {
-          this.props.postGuestOrder({
-            product_id,
-            price,
-            name,
-            amount,
-            total_price,
-            img
-          })
+            })
+          }
         }
+      }
+    } else {
+      return async event => {
+        event.preventDefault()
+        alert('Please select a quantity')
       }
     }
   }
@@ -97,7 +104,19 @@ class OneProduct extends Component {
     this.props.getOneProduct(this.props.match.params.productId)
   }
 
+  componentWillUnmount() {
+    this.props.changeLoadingState()
+  }
+
   render() {
+    const {loading} = this.props
+    if (loading) {
+      return (
+        <div>
+          <Loader type="Rings" color="#00BFFF" height={80} width={80} />
+        </div>
+      )
+    }
     return (
       <div>
         <img src={this.props.singleproduct.img} />
@@ -133,7 +152,8 @@ class OneProduct extends Component {
 
 const mapState = state => {
   return {
-    singleproduct: state.singleproduct,
+    singleproduct: state.singleproduct.product,
+    loading: state.singleproduct.loading,
     foundProd: state.pendingOrders,
     guestOrder: state.guestOrder
   }
@@ -150,7 +170,8 @@ const mapDispatch = dispatch => {
       dispatch(updatePendingOrder(pendingOrder, userId, productId)),
     postGuestOrder: product => dispatch(addGuestOrder(product)),
     editGuestOrder: (product, productId) =>
-      dispatch(updateGuestOrder(product, productId))
+      dispatch(updateGuestOrder(product, productId)),
+    changeLoadingState: () => dispatch(loadingProduct())
   }
 }
 

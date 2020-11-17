@@ -34,28 +34,35 @@ class SingleCartItem extends Component {
   }
 
   handleSubmit(productId, img, price, name) {
-    let amount = Number(this.state.value)
-    let totalPrice = amount * price
-    return event => {
-      event.preventDefault()
-      if (this.props.userId) {
-        this.props.updateOrder(
-          {amount: amount, total_price: totalPrice},
-          this.props.userId,
-          productId
-        )
-      } else {
-        this.props.editGuestOrder(
-          {
-            amount,
-            img,
-            price,
-            name,
-            total_price: totalPrice,
-            product_id: productId
-          },
-          productId
-        )
+    if (this.state.value !== '') {
+      let amount = Number(this.state.value)
+      let totalPrice = amount * price
+      return event => {
+        event.preventDefault()
+        if (this.props.userId) {
+          this.props.updateOrder(
+            {amount: amount, total_price: totalPrice},
+            this.props.userId,
+            productId
+          )
+        } else {
+          this.props.editGuestOrder(
+            {
+              amount,
+              img,
+              price,
+              name,
+              total_price: totalPrice,
+              product_id: productId
+            },
+            productId
+          )
+        }
+      }
+    } else {
+      return event => {
+        event.preventDefault()
+        alert('Please select a quantity')
       }
     }
   }

@@ -5,7 +5,7 @@ import axios from 'axios'
 const GET_ONE_PRODUCT = 'GET_ONE_PRODUCT'
 
 // initial state
-const defaultProduct = []
+const defaultProduct = {product: {}, loading: true}
 
 // action creator
 
@@ -27,11 +27,30 @@ export const fetchOneProduct = id => {
   }
 }
 
+const SET_LOADING = 'SET_LOADING'
+const loadingCreator = () => {
+  return {
+    type: SET_LOADING
+  }
+}
+export const loadingProduct = () => {
+  return async dispatch => {
+    try {
+      const action = loadingCreator()
+      dispatch(action)
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+}
+
 // reducer
 export default function(state = defaultProduct, action) {
   switch (action.type) {
     case GET_ONE_PRODUCT:
-      return action.product
+      return {product: action.product, loading: false}
+    case SET_LOADING:
+      return {product: {...state.product}, loading: true}
     default:
       return state
   }
