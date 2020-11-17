@@ -8,8 +8,9 @@ import {
   checkOutOrder,
   fetchPendingOrders,
   removeOrder
-} from '../redux/user_orders'
+} from '../store/user_orders'
 import {removeGuestOrder} from '../store/guestOrder'
+import {displayPrice} from '../utilityfunc'
 
 class ShoppingCart extends Component {
   constructor() {
@@ -23,6 +24,8 @@ class ShoppingCart extends Component {
 
   render() {
     const {pendingOrders} = this.props
+    let guest_total = 0
+    let user_total = 0
     return (
       <div>
         <h1>Here's your Shopping Cart</h1>
@@ -40,6 +43,9 @@ class ShoppingCart extends Component {
                 return 0
               })
               .map(order => {
+                console.log(order)
+                user_total += order.order_product.total_price
+                console.log('user_total: ', user_total)
                 return (
                   <div key={order.id}>
                     <SingleCartItem
@@ -61,6 +67,7 @@ class ShoppingCart extends Component {
                 )
               })
           : this.props.guestOrder.map(order => {
+              guest_total += order.total_price
               console.log('order: ', order)
               return (
                 <div key={order.product_id}>
@@ -77,10 +84,27 @@ class ShoppingCart extends Component {
               )
             })}
         {this.props.match.params.userId ? (
+          <div>
+            <h1>Subtotal:</h1>
+            <h2>${displayPrice(user_total)}</h2>
+          </div>
+        ) : (
+          <div>
+            <h1>Subtotal:</h1>
+            <h2>${displayPrice(guest_total)}</h2>
+          </div>
+        )}
+        {this.props.match.params.userId ? (
           <Link
-            to={`/users/${
-              this.props.match.params.userId
-            }/shopping-cart/confirmation`}
+            to={{
+              pathname: `/users/${
+                this.props.match.params.userId
+              }/shopping-cart/confirmation`,
+              state: {
+                orders: pendingOrders.products,
+                subtotal: user_total
+              }
+            }}
           >
             <button
               onClick={() =>

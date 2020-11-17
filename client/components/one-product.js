@@ -8,9 +8,10 @@ import {
   postOrder,
   fetchProdOrder,
   updatePendingOrder
-} from '../redux/user_orders.js'
+} from '../store/user_orders.js'
 import {addGuestOrder, updateGuestOrder} from '../store/guestOrder'
 import {element} from 'prop-types'
+import {displayPrice, formatInput} from '../utilityfunc'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -37,7 +38,10 @@ class OneProduct extends Component {
           let orig_amount = this.props.foundProd.products[0].order_product
             .amount
           this.props.updateOrder(
-            {amount: amount + orig_amount},
+            {
+              amount: amount + orig_amount,
+              total_price: (amount + orig_amount) * price
+            },
             userId,
             product_id
           )
@@ -70,7 +74,7 @@ class OneProduct extends Component {
               product_id,
               price,
               name,
-              updated_total_price,
+              total_price: updated_total_price,
               img
             },
             product_id
@@ -94,20 +98,6 @@ class OneProduct extends Component {
   }
 
   render() {
-    function displayPrice(num) {
-      let exponent = Math.pow(10, -2)
-      return num * exponent
-    }
-
-    function formatInput(e) {
-      //this prevents unwanted input in add to cart field
-      let checkIfNum
-      if (e.key !== undefined) {
-        checkIfNum =
-          e.key === 'e' || e.key === '.' || e.key === '+' || e.key === '-'
-      }
-      return checkIfNum && e.preventDefault()
-    }
     return (
       <div>
         <img src={this.props.singleproduct.img} />
