@@ -32,7 +32,7 @@ class ShoppingCart extends Component {
               })
               .map(order => {
                 return (
-                  <div key={order.id} id="cart-row">
+                  <div key={order.id} className="cart-row">
                     <SingleCartItem
                       userId={this.props.match.params.userId}
                       product={order}

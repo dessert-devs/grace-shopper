@@ -51,37 +51,46 @@ class SingleCartItem extends Component {
     }
     return (
       <div id="single-cart-product">
-        <div id="image-div">
+        <div className="cart-box">
           <img id="cart-img" src={this.props.product.img} />
         </div>
-        <div id="cart-single-info">
-          <div>{this.props.product.name}</div>
-          <div>amount:</div>
+        {/* <div id="cart-single-info"> */}
+        <div className="cart-box">
+          <div />
+          {this.props.product.name}
+        </div>
+        <div className="cart-box">
+          {/* <div>amount:</div> */}
           <form onSubmit={this.handleSubmit(this.props.product.id)}>
-            <label>
-              <input
-                type="number"
-                min="1"
-                onKeyDown={evt => {
-                  formatInput(evt)
-                }}
-                value={this.state.value}
-                onChange={this.handleChange}
-              />
-            </label>
+            {/* <label> */}
+            amount:
+            <input
+              type="number"
+              min="1"
+              onKeyDown={evt => {
+                formatInput(evt)
+              }}
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+            {/* </label> */}
             <input type="submit" value="Update" />
           </form>
-
-          <h2>price:</h2>
-          <h4>${displayPrice(this.props.product.price)}</h4>
-          <h2>total:</h2>
-          <h4>
+        </div>
+        <div className="cart-box">
+          <div>price:</div>
+          <div>${displayPrice(this.props.product.price)}</div>
+        </div>
+        <div className="cart-box">
+          <div>total:</div>
+          <div>
             $
             {displayPrice(
               this.props.product.price * this.props.product.order_product.amount
             )}
-          </h4>
+          </div>
         </div>
+        {/* </div> */}
       </div>
     )
   }

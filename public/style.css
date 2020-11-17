@@ -7,6 +7,10 @@ body {
   width: 100vw;
 }
 
+h1 {
+  color: rgb(128, 0, 49);
+}
+
 h2 {
   font-size: 20px;
 }
@@ -56,7 +60,8 @@ button {
   outline: none;
   letter-spacing: 0.1em;
   transition-duration: 0.4s;
-  background-color: #d6627a;
+  /* background-color: #d6627a; */
+  background-image: linear-gradient(120deg, #d6627a, #f09fae);
   border-radius: 8px;
 }
 
@@ -68,6 +73,12 @@ button:hover {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
+
+#img {
+  border-radius: 13px;
+  border-color: rgb(222, 255, 253);
+  border-style: solid;
 }
 
 #all-cart-products {
@@ -83,33 +94,38 @@ button:hover {
 
 #single-cart-product {
   display: flex;
+  justify-content: space-between;
+  width: 560px;
 }
 
 #cart-single-info {
   display: flex;
 }
 
-#img-div {
+/* #img-div {
   align-items: center;
-  /* display: flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center; */
-}
+  justify-content: center;
+} */
 
-#img {
-  border-radius: 13px;
-  border-color: rgb(222, 255, 253);
-  border-style: solid;
-}
-
-#cart-row {
+.cart-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
   margin: 20px;
   background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
   border-radius: 13px;
+}
+
+.cart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+  margin: 10px;
+  text-align: center;
 }
 
 #cart-img {
@@ -126,4 +142,45 @@ button:hover {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+input[type='number'] {
+  width: 50%;
+  height: 18px;
+  border: 0px;
+  border-radius: 2px;
+  background-color: #f5d0ee;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 2px;
+}
+
+input[type='number']:focus {
+  border: none;
+  background-color: #f8b4ed;
+  outline-width: 0;
+  border-radius: 0px;
+}
+
+input[type='submit'] {
+  padding: 0.5em 1em;
+  margin: 4px;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  background-color: #77d2e6;
+  border-radius: 8px;
+}
+
+input[type='submit']:hover {
+  color: white;
 }
