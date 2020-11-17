@@ -2,6 +2,28 @@ const router = require('express').Router()
 const {User, Product, Order, Order_Product} = require('../db/models')
 module.exports = router
 
+const adminsOnly = (req, res, next) => {
+  if (!req.user || req.user.user_type !== 'admin') {
+    const err = new Error('Wait, this is illegal')
+    err.status = 401
+    return next(err)
+  }
+  next()
+}
+
+const adminOrUser = (req, res, next) => {
+  if (
+    !req.user ||
+    (req.user.user_type !== 'admin' &&
+      Number(req.user.id) !== Number(req.params.userId))
+  ) {
+    const err = new Error('Wait, this is illegal')
+    err.status = 401
+    return next(err)
+  }
+  next()
+}
+
 /*
 =========For User============
 
@@ -19,7 +41,7 @@ Set Up Route to User Order
       - user deletes smth from cart
 */
 
-router.get('/:userId/pending-order', async (req, res, next) => {
+router.get('/:userId/pending-order', adminOrUser, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -37,30 +59,34 @@ router.get('/:userId/pending-order', async (req, res, next) => {
 })
 
 //check whether userid+productid combination exists in order_product table
-router.get('/:userId/pending-order/:productId', async (req, res, next) => {
-  try {
-    const orders = await Order.findAll({
-      where: {
-        userId: req.params.userId,
-        pending: true
-      },
-      include: [
-        {
-          model: Product,
-          where: {
-            id: req.params.productId
-          },
-          required: true
-        }
-      ]
-    })
-    res.json(orders[0])
-  } catch (error) {
-    next(error)
+router.get(
+  '/:userId/pending-order/:productId',
+  adminOrUser,
+  async (req, res, next) => {
+    try {
+      const orders = await Order.findAll({
+        where: {
+          userId: req.params.userId,
+          pending: true
+        },
+        include: [
+          {
+            model: Product,
+            where: {
+              id: req.params.productId
+            },
+            required: true
+          }
+        ]
+      })
+      res.json(orders[0])
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
-router.post('/:userId/pending-order', async (req, res, next) => {
+router.post('/:userId/pending-order', adminOrUser, async (req, res, next) => {
   try {
     // if(req.body.firstName===undefined || req.body.lastName === undefined || req.body.email===undefined){
     //   res.status(500).json('Fields First Name, Last Name and Email are required!')
@@ -94,67 +120,90 @@ router.post('/:userId/pending-order', async (req, res, next) => {
   }
 })
 
+//update pending column for completed order
+router.put('/:userId/pending-order', adminOrUser, async (req, res, next) => {
+  try {
+    const order = await Order.findAll({
+      where: {userId: req.params.userId, pending: true}
+    })
+    const updated = await order[0].update({pending: false})
+    console.log('updated here: ', updated)
+    res.json(updated.dataValues)
+  } catch (error) {
+    next(error)
+  }
+})
+
 //we need the front end to have product Id
-router.put('/:userId/pending-order/:productId', async (req, res, next) => {
-  try {
-    const order = await Order.findAll({
-      where: {userId: req.params.userId, pending: true}
-    })
-    const order_id = order[0].dataValues.id
-    const order_product = await Order_Product.findAll({
-      where: {
-        orderId: order_id,
-        productId: req.params.productId
-      }
-    })
-    await order_product[0].update(req.body)
-
-    const updated = await Order.findAll({
-      where: {
-        userId: req.params.userId,
-        pending: true
-      },
-      include: [
-        {
-          model: Product,
-          where: {
-            id: req.params.productId
-          }
+router.put(
+  '/:userId/pending-order/:productId',
+  adminOrUser,
+  async (req, res, next) => {
+    try {
+      const order = await Order.findAll({
+        where: {userId: req.params.userId, pending: true}
+      })
+      const order_id = order[0].dataValues.id
+      const order_product = await Order_Product.findAll({
+        where: {
+          orderId: order_id,
+          productId: req.params.productId
         }
-      ]
-    })
-    console.log('result: ', updated)
-    res.json(updated[0].products[0])
-  } catch (error) {
-    next(error)
-  }
-})
+      })
+      await order_product[0].update(req.body)
 
-router.delete('/:userId/pending-order/:productId', async (req, res, next) => {
-  try {
-    const order = await Order.findAll({
-      where: {userId: req.params.userId, pending: true}
-    })
-    const order_id = order[0].dataValues.id
-    const order_product = await Order_Product.findAll({
-      where: {
-        orderId: order_id,
-        productId: req.params.productId
-      }
-    })
-    await order_product[0].destroy()
-    res.sendStatus(204)
-  } catch (error) {
-    next(error)
+      const updated = await Order.findAll({
+        where: {
+          userId: req.params.userId,
+          pending: true
+        },
+        include: [
+          {
+            model: Product,
+            where: {
+              id: req.params.productId
+            }
+          }
+        ]
+      })
+      console.log('result: ', updated)
+      res.json(updated[0].products[0])
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
+
+router.delete(
+  '/:userId/pending-order/:productId',
+  adminOrUser,
+  async (req, res, next) => {
+    try {
+      const order = await Order.findAll({
+        where: {userId: req.params.userId, pending: true}
+      })
+      const order_id = order[0].dataValues.id
+      const order_product = await Order_Product.findAll({
+        where: {
+          orderId: order_id,
+          productId: req.params.productId
+        }
+      })
+      await order_product[0].destroy()
+      res.sendStatus(204)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 /*
 ===========For Admin==========
 we should also include '/delete'
 */
 
-router.get('/', async (req, res, next) => {
+// admin gets all user information
+router.get('/', adminsOnly, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -165,5 +214,42 @@ router.get('/', async (req, res, next) => {
     res.json(users)
   } catch (err) {
     next(err)
+  }
+})
+
+//admin adds a product to product inventory
+router.post('/products', adminsOnly, async (req, res, next) => {
+  try {
+    const addedProducts = await Product.create(req.body)
+    res.json(addedProducts)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// admin modifies a product
+router.put('/products/:productId', adminsOnly, async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.productId)
+    await product.update(req.body)
+    const updated = await Product.findAll({
+      where: {
+        id: req.params.productId
+      }
+    })
+    res.json(updated[0])
+  } catch (error) {
+    next(error)
+  }
+})
+
+// admin deletes a product
+router.delete('/products/:productId', adminsOnly, async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.productId)
+    await product.destroy()
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
   }
 })

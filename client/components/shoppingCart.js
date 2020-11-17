@@ -1,9 +1,15 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
+
 import SingleCartItem from './singleCartItem'
 
-import {fetchPendingOrders, removeOrder} from '../redux/user_orders'
+import {
+  checkOutOrder,
+  fetchPendingOrders,
+  removeOrder
+} from '../redux/user_orders'
 
 class ShoppingCart extends Component {
   constructor() {
@@ -49,6 +55,25 @@ class ShoppingCart extends Component {
                 </div>
               )
             })}
+        {this.props.match.params.userId ? (
+          <Link
+            to={`/users/${
+              this.props.match.params.userId
+            }/shopping-cart/confirmation`}
+          >
+            <button
+              onClick={() =>
+                this.props.checkOut(this.props.match.params.userId)
+              }
+            >
+              Check Out
+            </button>
+          </Link>
+        ) : (
+          <button onClick={() => alert('Please sign up or log in!')}>
+            Check Out
+          </button>
+        )}
       </div>
     )
   }
@@ -64,7 +89,9 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getPendingOrders: userId => dispatch(fetchPendingOrders(userId)),
-    deleteOrder: (userId, productId) => dispatch(removeOrder(userId, productId))
+    deleteOrder: (userId, productId) =>
+      dispatch(removeOrder(userId, productId)),
+    checkOut: userId => dispatch(checkOutOrder(userId))
   }
 }
 
