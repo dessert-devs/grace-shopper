@@ -30,7 +30,8 @@ class SingleCartItem extends Component {
   render() {
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
-      return num * exponent
+      let answer = num * exponent
+      return answer.toFixed(2)
     }
     function formatInput(e) {
       let checkIfNum
@@ -61,7 +62,10 @@ class SingleCartItem extends Component {
         </div>
         <div className="cart-box">
           {/* <div>amount:</div> */}
-          <form onSubmit={this.handleSubmit(this.props.product.id)}>
+          <form
+            className="cart-form"
+            onSubmit={this.handleSubmit(this.props.product.id)}
+          >
             {/* <label> */}
             amount:
             <input
@@ -87,7 +91,7 @@ class SingleCartItem extends Component {
             $
             {displayPrice(
               this.props.product.price * this.props.product.order_product.amount
-            )}
+            ).toFixed(2)}
           </div>
         </div>
         {/* </div> */}

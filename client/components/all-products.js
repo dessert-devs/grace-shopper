@@ -9,9 +9,15 @@ class AllProducts extends React.Component {
   }
 
   render() {
+    // function displayPrice(num) {
+    //   let exponent = Math.pow(10, -2)
+    //   return num * exponent
+    // }
+
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
-      return num * exponent
+      let answer = num * exponent
+      return answer.toFixed(2)
     }
 
     return (

@@ -61,7 +61,8 @@ class OneProduct extends Component {
   render() {
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
-      return num * exponent
+      let answer = num * exponent
+      return answer.toFixed(2)
     }
 
     function formatInput(e) {
@@ -75,31 +76,39 @@ class OneProduct extends Component {
     }
 
     return (
-      <div>
-        <img src={this.props.singleproduct.img} />
-        <h5>{this.props.singleproduct.name}</h5>
-        <h5>${displayPrice(this.props.singleproduct.price)}</h5>
-        <h5>{this.props.singleproduct.description}</h5>
-        <form
-          onSubmit={this.handleSubmit(
-            this.props.singleproduct.id,
-            this.props.match.params.user_id,
-            this.props.singleproduct.price
-          )}
-        >
-          <label>
-            <input
-              type="number"
-              min="1"
-              onKeyDown={evt => {
-                formatInput(evt)
-              }}
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Add To Cart" />
-        </form>
+      <div className="one-product">
+        <img id="img" src={this.props.singleproduct.img} />
+        <div className="one-product-info">
+          <div className="one-product-text text-bold">
+            {this.props.singleproduct.name}
+          </div>
+          <div className="one-product-text">
+            ${displayPrice(this.props.singleproduct.price)}
+          </div>
+          <div className="one-product-text">
+            {this.props.singleproduct.description}
+          </div>
+          <form
+            onSubmit={this.handleSubmit(
+              this.props.singleproduct.id,
+              this.props.match.params.user_id,
+              this.props.singleproduct.price
+            )}
+          >
+            <label>
+              <input
+                type="number"
+                min="1"
+                onKeyDown={evt => {
+                  formatInput(evt)
+                }}
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </label>
+            <input type="submit" value="Add To Cart" />
+          </form>
+        </div>
       </div>
     )
   }
