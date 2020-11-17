@@ -18,15 +18,16 @@ const getGuestOrder = product => {
   }
 }
 
-const editOrderCreator = pendingOrder => {
+const editGuestOrder = (guestOrder, productId) => {
   return {
     type: GUEST_EDIT_ORDER,
-    pendingOrder
+    guestOrder,
+    productId
   }
 }
 
 // Action Creator
-const deleteOrder = productId => {
+const deleteGuestOrder = productId => {
   return {
     type: GUEST_DELETE_ORDER,
     productId
@@ -41,11 +42,43 @@ export const addGuestOrder = product => {
   }
 }
 
+//THUNK
+export const updateGuestOrder = (product, productId) => {
+  return dispatch => {
+    dispatch(editGuestOrder(product, productId))
+  }
+}
+
+//THUNK
+export const removeGuestOrder = productId => {
+  return dispatch => {
+    dispatch(deleteGuestOrder(productId))
+  }
+}
+
 // reducer
 export default function(state = defaultProduct, action) {
   switch (action.type) {
     case GUEST_ORDER:
       return [...state, action.product]
+    case GUEST_EDIT_ORDER:
+      // console.log("STATE in guestOrder", state)
+      // console.log("action.productId", action.productId)
+      // const foundProduct = state.findIndex((element) => {
+      //   console.log("element redux guest Order", element)
+      //   return element.product_id === action.productId;
+      // });
+      // console.log("foundProduct", foundProduct)
+      // const newProductState = [...state];
+      // console.log("newProductState", newProductState)
+      // newProductState.splice(foundProduct, 1, action.productId);
+      // return newProductState;
+      return [
+        ...state.filter(order => order.product_id !== action.productId),
+        action.guestOrder
+      ]
+    case GUEST_DELETE_ORDER:
+      return state.filter(order => order.product_id !== action.productId)
     default:
       return state
   }

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import SingleCartItem from './singleCartItem'
 import {fetchPendingOrders, removeOrder} from '../redux/user_orders'
+import {removeGuestOrder} from '../store/guestOrder'
 
 class ShoppingCart extends Component {
   constructor() {
@@ -16,7 +17,6 @@ class ShoppingCart extends Component {
 
   render() {
     const {pendingOrders} = this.props
-    console.log('RENDER shopping cart guest order', this.props.guestOrder)
     return (
       <div>
         <h1>Here's your Shopping Cart</h1>
@@ -55,16 +55,14 @@ class ShoppingCart extends Component {
                 )
               })
           : this.props.guestOrder.map(order => {
+              //console.log("ORDER in shopping cart", order)
               return (
-                <div key={order.id}>
+                <div key={order.product_id}>
                   <SingleCartItem product={order} />
                   <button
                     type="submit"
                     onClick={() =>
-                      this.props.deleteOrder(
-                        this.props.match.params.userId,
-                        order.id
-                      )
+                      this.props.deleteGuestOrder(order.product_id)
                     }
                   >
                     Remove
@@ -89,7 +87,9 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getPendingOrders: userId => dispatch(fetchPendingOrders(userId)),
-    deleteOrder: (userId, productId) => dispatch(removeOrder(userId, productId))
+    deleteOrder: (userId, productId) =>
+      dispatch(removeOrder(userId, productId)),
+    deleteGuestOrder: productId => dispatch(removeGuestOrder(productId))
   }
 }
 

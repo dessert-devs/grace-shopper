@@ -25,7 +25,7 @@ class OneProduct extends Component {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit(product_id, userId, price, name) {
+  handleSubmit(product_id, userId, price, name, img) {
     let amount = Number(this.state.value)
     let total_price = price * amount
     return async event => {
@@ -52,7 +52,8 @@ class OneProduct extends Component {
           price,
           name,
           amount,
-          total_price
+          total_price,
+          img
         })
       }
     }
@@ -98,7 +99,8 @@ class OneProduct extends Component {
             this.props.singleproduct.id,
             this.props.match.params.user_id,
             this.props.singleproduct.price,
-            this.props.singleproduct.name
+            this.props.singleproduct.name,
+            this.props.singleproduct.img
           )}
         >
           <label>
