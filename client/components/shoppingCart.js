@@ -17,39 +17,41 @@ class ShoppingCart extends Component {
     const {pendingOrders} = this.props
     return (
       <div id="all-cart-products">
-        <h1>Here's Your Shopping Cart</h1>
-        {pendingOrders.products &&
-          pendingOrders.products
-            .sort((a, b) => {
-              if (a.id < b.id) {
-                return -1
-              }
-              if (a.id > b.id) {
-                return 1
-              }
-              return 0
-            })
-            .map(order => {
-              return (
-                <div key={order.id} id="all-cart-products">
-                  <SingleCartItem
-                    userId={this.props.match.params.userId}
-                    product={order}
-                  />
-                  <button
-                    type="submit"
-                    onClick={() =>
-                      this.props.deleteOrder(
-                        this.props.match.params.userId,
-                        order.id
-                      )
-                    }
-                  >
-                    Remove
-                  </button>
-                </div>
-              )
-            })}
+        <h1>Your Shopping Cart:</h1>
+        <div id="cart-list">
+          {pendingOrders.products &&
+            pendingOrders.products
+              .sort((a, b) => {
+                if (a.id < b.id) {
+                  return -1
+                }
+                if (a.id > b.id) {
+                  return 1
+                }
+                return 0
+              })
+              .map(order => {
+                return (
+                  <div key={order.id} id="cart-row">
+                    <SingleCartItem
+                      userId={this.props.match.params.userId}
+                      product={order}
+                    />
+                    <button
+                      type="submit"
+                      onClick={() =>
+                        this.props.deleteOrder(
+                          this.props.match.params.userId,
+                          order.id
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )
+              })}
+        </div>
       </div>
     )
   }

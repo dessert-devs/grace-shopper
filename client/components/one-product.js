@@ -21,32 +21,41 @@ class OneProduct extends Component {
   handleChange(event) {
     this.setState({value: event.target.value})
   }
-
+  /*eslint-disable */
   handleSubmit(product_id, userId, price) {
-    // README: add route to update db with the amount variable
     let amount = Number(this.state.value)
     let total_price = price * amount
+
     return async event => {
       event.preventDefault()
-      await this.props.checkProdExists(userId, product_id)
-      if (this.props.foundProd) {
-        let orig_amount = this.props.foundProd.products[0].order_product.amount
-        this.props.updateOrder(
-          {amount: amount + orig_amount},
-          userId,
-          product_id
-        )
-      } else {
-        this.props.addShoppingCart(
-          {amount, price, total_price, product_id},
-          userId
-        )
+      if (userId) {
+        await this.props.checkProdExists(userId, product_id)
+        if (this.props.foundProd) {
+          let orig_amount = this.props.foundProd.products[0].order_product
+            .amount
+          this.props.updateOrder(
+            {amount: amount + orig_amount},
+            userId,
+            product_id
+          )
+        } else {
+          this.props.addShoppingCart(
+            {amount, price, total_price, product_id},
+            userId
+          )
+        }
       }
+      // else {
+      //   // alert(
+      //   //   'Please sign up or log in in order to add items to shopping cart!'
+      //   // )
+      // }
     }
   }
 
   componentDidMount() {
     this.props.getOneProduct(this.props.match.params.productId)
+    // console.log('comp mount:', this.props)
   }
 
   render() {

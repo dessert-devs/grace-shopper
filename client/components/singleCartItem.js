@@ -55,8 +55,8 @@ class SingleCartItem extends Component {
           <img id="cart-img" src={this.props.product.img} />
         </div>
         <div id="cart-single-info">
-          <h2>{this.props.product.name}</h2>
-          <h2>amount:</h2>
+          <div>{this.props.product.name}</div>
+          <div>amount:</div>
           <form onSubmit={this.handleSubmit(this.props.product.id)}>
             <label>
               <input
