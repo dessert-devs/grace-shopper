@@ -68,7 +68,7 @@ class SingleCartItem extends Component {
         <h2>amount:</h2>
         <form
           onSubmit={this.handleSubmit(
-            this.props.product.product_id,
+            this.props.product.product_id || this.props.product.id,
             this.props.product.img,
             this.props.product.price,
             this.props.product.name

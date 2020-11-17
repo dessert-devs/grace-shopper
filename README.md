@@ -14,4 +14,3 @@ Check out our test specs by running: npm test.
 Run npm run seed to stock your bakery with delicious treats.
 Happy shopping!
 View our original DB schema here: https://awwapp.com/b/um7a1jshjn0u0/
-

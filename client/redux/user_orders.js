@@ -8,6 +8,7 @@ const ADD_ORDER = 'ADD_ORDER'
 const EDIT_ORDER = 'EDIT_ORDER'
 const DELETE_ORDER = 'DELETE_ORDER'
 const GET_PRODUCT_ORDER = 'GET_PRODUCT_ORDER'
+const CHECK_OUT = 'CHECK_OUT'
 
 //Action Creator
 const getPendingOrders = pendingOrders => {
@@ -44,6 +45,13 @@ const deleteOrder = productId => {
   return {
     type: DELETE_ORDER,
     productId
+  }
+}
+
+const checkOut = order => {
+  return {
+    type: CHECK_OUT,
+    order
   }
 }
 
@@ -117,6 +125,17 @@ export const removeOrder = (userId, productId) => {
   }
 }
 
+export const checkOutOrder = userId => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`/api/users/${userId}/pending-order`)
+      dispatch(checkOut(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 //REDUCER
 const initialState = {}
 export default function pendingOrdersReducer(state = initialState, action) {
@@ -143,6 +162,8 @@ export default function pendingOrdersReducer(state = initialState, action) {
         ...state,
         products: state.products.filter(order => order.id !== action.productId)
       }
+    case CHECK_OUT:
+      return action.order
     default:
       return state
   }

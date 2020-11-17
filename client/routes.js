@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, AllProducts, OneProduct} from './components'
 import {me} from './store'
 import ShoppingCart from './components/shoppingCart'
-
+import Confirmation from './components/confirmation'
 /**
  * COMPONENT
  */
@@ -44,6 +44,11 @@ class Routes extends Component {
               exact
               path="/users/:userId/shopping-cart"
               component={ShoppingCart}
+            />
+            <Route
+              exact
+              path="/users/:userId/shopping-cart/confirmation"
+              component={Confirmation}
             />
           </Switch>
         )}

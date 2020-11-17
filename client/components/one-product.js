@@ -88,21 +88,12 @@ class OneProduct extends Component {
       }
     }
   }
-  // else{
-  //   // this.setState({
-  //   //   price: price
-  //   // })
-  //   // console.log("PROPS NAME HANDLE SUBMIT", this.props.singleproduct.name)
-
-  //   alert('Please sign up or log in in order to add items to shopping cart!')
 
   componentDidMount() {
     this.props.getOneProduct(this.props.match.params.productId)
   }
 
   render() {
-    //console.log("PROPS RENDER", this.props)
-
     function displayPrice(num) {
       let exponent = Math.pow(10, -2)
       return num * exponent
@@ -117,7 +108,6 @@ class OneProduct extends Component {
       }
       return checkIfNum && e.preventDefault()
     }
-
     return (
       <div>
         <img src={this.props.singleproduct.img} />
