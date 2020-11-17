@@ -1,3 +1,6 @@
+/*eslint-disable */
+// ^^^^ TAKE OUT
+
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchOneProduct} from '../store/singleproduct.js'
@@ -6,6 +9,8 @@ import {
   fetchProdOrder,
   updatePendingOrder
 } from '../redux/user_orders.js'
+import {addGuestOrder, updateGuestOrder} from '../store/guestOrder'
+import {element} from 'prop-types'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -13,7 +18,6 @@ class OneProduct extends Component {
     this.state = {
       value: 0
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -22,7 +26,7 @@ class OneProduct extends Component {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit(product_id, userId, price) {
+  handleSubmit(product_id, userId, price, name, img) {
     let amount = Number(this.state.value)
     let total_price = price * amount
     return async event => {
@@ -44,9 +48,43 @@ class OneProduct extends Component {
           )
         }
       } else {
-        alert(
-          'Please sign up or log in in order to add items to shopping cart!'
-        )
+        if (
+          this.props.guestOrder
+            .map(elm => {
+              return elm.product_id
+            })
+            .includes(product_id)
+        ) {
+          let orig_guest_amount = this.props.guestOrder.filter(
+            elm => elm.product_id === product_id
+          )[0].amount
+          console.log('original_guest_amount: ', orig_guest_amount)
+          let updated_amount = orig_guest_amount + amount
+          console.log('updated amount: ', updated_amount)
+
+          let updated_total_price = updated_amount * price
+          console.log('i returted true')
+          this.props.editGuestOrder(
+            {
+              amount: updated_amount,
+              product_id,
+              price,
+              name,
+              updated_total_price,
+              img
+            },
+            product_id
+          )
+        } else {
+          this.props.postGuestOrder({
+            product_id,
+            price,
+            name,
+            amount,
+            total_price,
+            img
+          })
+        }
       }
     }
   }
@@ -80,7 +118,9 @@ class OneProduct extends Component {
           onSubmit={this.handleSubmit(
             this.props.singleproduct.id,
             this.props.match.params.user_id,
-            this.props.singleproduct.price
+            this.props.singleproduct.price,
+            this.props.singleproduct.name,
+            this.props.singleproduct.img
           )}
         >
           <label>
@@ -104,7 +144,8 @@ class OneProduct extends Component {
 const mapState = state => {
   return {
     singleproduct: state.singleproduct,
-    foundProd: state.pendingOrders
+    foundProd: state.pendingOrders,
+    guestOrder: state.guestOrder
   }
 }
 
@@ -116,10 +157,11 @@ const mapDispatch = dispatch => {
     checkProdExists: (userId, productId) =>
       dispatch(fetchProdOrder(userId, productId)),
     updateOrder: (pendingOrder, userId, productId) =>
-      dispatch(updatePendingOrder(pendingOrder, userId, productId))
+      dispatch(updatePendingOrder(pendingOrder, userId, productId)),
+    postGuestOrder: product => dispatch(addGuestOrder(product)),
+    editGuestOrder: (product, productId) =>
+      dispatch(updateGuestOrder(product, productId))
   }
 }
 
 export default connect(mapState, mapDispatch)(OneProduct)
-
-// export default OneProduct;
