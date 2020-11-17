@@ -5,6 +5,7 @@
 const GUEST_ORDER = 'GUEST_ORDER'
 const GUEST_EDIT_ORDER = 'GUEST_EDIT_ORDER'
 const GUEST_DELETE_ORDER = 'GUEST_DELETE_ORDER'
+// const GUEST_DELETE_ORDER = 'GUEST_DELETE_ORDER'
 
 // initial state
 const defaultProduct = []
@@ -62,21 +63,12 @@ export default function(state = defaultProduct, action) {
     case GUEST_ORDER:
       return [...state, action.product]
     case GUEST_EDIT_ORDER:
-      // console.log("STATE in guestOrder", state)
-      // console.log("action.productId", action.productId)
-      // const foundProduct = state.findIndex((element) => {
-      //   console.log("element redux guest Order", element)
-      //   return element.product_id === action.productId;
-      // });
-      // console.log("foundProduct", foundProduct)
-      // const newProductState = [...state];
-      // console.log("newProductState", newProductState)
-      // newProductState.splice(foundProduct, 1, action.productId);
-      // return newProductState;
-      return [
-        ...state.filter(order => order.product_id !== action.productId),
-        action.guestOrder
-      ]
+      const foundProduct = state.findIndex(element => {
+        return element.product_id === action.productId
+      })
+      const newProductState = [...state]
+      newProductState.splice(foundProduct, 1, action.guestOrder)
+      return newProductState
     case GUEST_DELETE_ORDER:
       return state.filter(order => order.product_id !== action.productId)
     default:

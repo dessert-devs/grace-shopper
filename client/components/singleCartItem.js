@@ -40,7 +40,7 @@ class SingleCartItem extends Component {
         this.props.updateOrder({amount: amount}, this.props.userId, productId)
       } else {
         this.props.editGuestOrder(
-          {amount, img, price, name, totalPrice},
+          {amount, img, price, name, totalPrice, product_id: productId},
           productId
         )
       }

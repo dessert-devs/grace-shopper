@@ -55,7 +55,7 @@ class ShoppingCart extends Component {
                 )
               })
           : this.props.guestOrder.map(order => {
-              //console.log("ORDER in shopping cart", order)
+              console.log('order: ', order)
               return (
                 <div key={order.product_id}>
                   <SingleCartItem product={order} />

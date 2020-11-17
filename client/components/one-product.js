@@ -9,7 +9,8 @@ import {
   fetchProdOrder,
   updatePendingOrder
 } from '../redux/user_orders.js'
-import {addGuestOrder} from '../store/guestOrder'
+import {addGuestOrder, updateGuestOrder} from '../store/guestOrder'
+import {element} from 'prop-types'
 
 class OneProduct extends Component {
   constructor(props) {
@@ -47,14 +48,43 @@ class OneProduct extends Component {
           )
         }
       } else {
-        this.props.postGuestOrder({
-          product_id,
-          price,
-          name,
-          amount,
-          total_price,
-          img
-        })
+        if (
+          this.props.guestOrder
+            .map(elm => {
+              return elm.product_id
+            })
+            .includes(product_id)
+        ) {
+          let orig_guest_amount = this.props.guestOrder.filter(
+            elm => elm.product_id === product_id
+          )[0].amount
+          console.log('original_guest_amount: ', orig_guest_amount)
+          let updated_amount = orig_guest_amount + amount
+          console.log('updated amount: ', updated_amount)
+
+          let updated_total_price = updated_amount * price
+          console.log('i returted true')
+          this.props.editGuestOrder(
+            {
+              amount: updated_amount,
+              product_id,
+              price,
+              name,
+              updated_total_price,
+              img
+            },
+            product_id
+          )
+        } else {
+          this.props.postGuestOrder({
+            product_id,
+            price,
+            name,
+            amount,
+            total_price,
+            img
+          })
+        }
       }
     }
   }
@@ -124,7 +154,8 @@ class OneProduct extends Component {
 const mapState = state => {
   return {
     singleproduct: state.singleproduct,
-    foundProd: state.pendingOrders
+    foundProd: state.pendingOrders,
+    guestOrder: state.guestOrder
   }
 }
 
@@ -137,7 +168,9 @@ const mapDispatch = dispatch => {
       dispatch(fetchProdOrder(userId, productId)),
     updateOrder: (pendingOrder, userId, productId) =>
       dispatch(updatePendingOrder(pendingOrder, userId, productId)),
-    postGuestOrder: product => dispatch(addGuestOrder(product))
+    postGuestOrder: product => dispatch(addGuestOrder(product)),
+    editGuestOrder: (product, productId) =>
+      dispatch(updateGuestOrder(product, productId))
   }
 }
 
