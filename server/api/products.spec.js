@@ -1,32 +1,29 @@
 /* global describe beforeEach it */
-
 const {expect} = require('chai')
 const request = require('supertest')
 const db = require('../db')
 const app = require('../index')
-const User = db.model('user')
-
-describe('User routes', () => {
+const Product = db.model('product')
+//Our test spec
+describe('Product routes', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
-
-  describe('/api/users/', () => {
-    const codysEmail = 'cody@email.com'
-
+  describe('/api/all-products/', () => {
+    const productName = 'Cookie'
     beforeEach(() => {
-      return User.create({
-        email: codysEmail
+      return Product.create({
+        name: productName,
+        price: 400,
+        inventoryQty: 500
       })
     })
-    //below test will fail because the route is protected to 'admin only'
-    it('GET /api/users', async () => {
+    it('GET /api/all-products', async () => {
       const res = await request(app)
-        .get('/api/users')
+        .get('/api/all-products')
         .expect(200)
-
       expect(res.body).to.be.an('array')
-      expect(res.body[0].email).to.be.equal(codysEmail)
+      expect(res.body[0].name).to.be.equal(productName)
     })
   }) // end describe('/api/users')
 }) // end describe('User routes')

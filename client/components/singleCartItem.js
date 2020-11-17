@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {removeOrder, updatePendingOrder} from '../redux/user_orders'
+import {removeOrder, updatePendingOrder} from '../store/user_orders'
 import {updateGuestOrder} from '../store/guestOrder'
+import {Link} from 'react-router-dom'
+import {displayPrice, formatInput} from '../utilityfunc'
 
 class SingleCartItem extends Component {
   constructor(props) {
@@ -32,38 +34,52 @@ class SingleCartItem extends Component {
   }
 
   handleSubmit(productId, img, price, name) {
-    let amount = Number(this.state.value)
-    let totalPrice = amount * price
-    return event => {
-      event.preventDefault()
-      if (this.props.userId) {
-        this.props.updateOrder({amount: amount}, this.props.userId, productId)
-      } else {
-        this.props.editGuestOrder(
-          {amount, img, price, name, totalPrice, product_id: productId},
-          productId
-        )
+    if (this.state.value !== '') {
+      let amount = Number(this.state.value)
+      let totalPrice = amount * price
+      return event => {
+        event.preventDefault()
+        if (this.props.userId) {
+          this.props.updateOrder(
+            {amount: amount, total_price: totalPrice},
+            this.props.userId,
+            productId
+          )
+        } else {
+          this.props.editGuestOrder(
+            {
+              amount,
+              img,
+              price,
+              name,
+              total_price: totalPrice,
+              product_id: productId
+            },
+            productId
+          )
+        }
+      }
+    } else {
+      return event => {
+        event.preventDefault()
+        alert('Please select a quantity')
       }
     }
   }
 
   render() {
-    function displayPrice(num) {
-      let exponent = Math.pow(10, -2)
-      return num * exponent
-    }
-    function formatInput(e) {
-      let checkIfNum
-      if (e.key !== undefined) {
-        checkIfNum =
-          e.key === 'e' || e.key === '.' || e.key === '+' || e.key === '-'
-      }
-      return checkIfNum && e.preventDefault()
-    }
-
+    let productId = this.props.product.product_id || this.props.product.id
     return (
       <div>
-        <img className="imgs" src={this.props.product.img} />
+        {this.props.userId ? (
+          <Link to={`/home/all-products/${this.props.userId}/${productId}`}>
+            <img className="imgs" src={this.props.product.img} />
+          </Link>
+        ) : (
+          <Link to={`/all-products/${productId}`}>
+            <img className="imgs" src={this.props.product.img} />
+          </Link>
+        )}
         <h2>{this.props.product.name}</h2>
         <h2>amount:</h2>
         <form
