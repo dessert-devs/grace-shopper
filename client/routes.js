@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, AllProducts, OneProduct} from './components'
 import {me} from './store'
 import ShoppingCart from './components/shoppingCart'
-
+import Confirmation from './components/confirmation'
 /**
  * COMPONENT
  */
@@ -25,11 +25,7 @@ class Routes extends Component {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/all-products" component={AllProducts} />
         <Route exact path="/all-products/:productId" component={OneProduct} />
-        <Route
-          exact
-          path="/users/:userId/shopping-cart"
-          component={ShoppingCart}
-        />
+        <Route exact path="/shopping-cart" component={ShoppingCart} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
@@ -39,11 +35,20 @@ class Routes extends Component {
               path="/home/all-products/:user_id"
               component={AllProducts}
             />
-            {/* <Route exact path={`/home/${user_id}/all-products`} component={AllProducts} /> */}
             <Route
               exact
               path="/home/all-products/:user_id/:productId"
               component={OneProduct}
+            />
+            <Route
+              exact
+              path="/users/:userId/shopping-cart"
+              component={ShoppingCart}
+            />
+            <Route
+              exact
+              path="/users/:userId/shopping-cart/confirmation"
+              component={Confirmation}
             />
           </Switch>
         )}

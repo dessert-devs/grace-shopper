@@ -13,7 +13,7 @@ const Navbar = ({handleClick, isLoggedIn, user_id}) => (
             DEV'S DESSERTS
             <img id="title-icon" src="/favicon.ico" />
           </div>
-          <div id="navbar-links-">
+          <div id="navbar-links">
             <img id="title-icon" src="/favicon.ico" />
             {/* The navbar will show these links after you log in */}
             <Link to={`/home/all-products/${user_id}`}>Home</Link>
@@ -34,6 +34,10 @@ const Navbar = ({handleClick, isLoggedIn, user_id}) => (
             <img id="title-icon" src="/favicon.ico" />
           </div>
           <div id="navbar-links">
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/all-products">Home</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/shopping-cart">Shopping Cart</Link>
             <img id="title-icon" src="/favicon.ico" />
             <Link to="/login">Login</Link>
             <img id="title-icon" src="/favicon.ico" />

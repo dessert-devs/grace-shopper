@@ -1,19 +1,25 @@
+/*eslint-disable */
+// ^^^^ TAKE OUT
+
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchOneProduct} from '../store/singleproduct.js'
+import {fetchOneProduct, loadingProduct} from '../store/singleproduct.js'
 import {
   postOrder,
   fetchProdOrder,
   updatePendingOrder
-} from '../redux/user_orders.js'
+} from '../store/user_orders.js'
+import {addGuestOrder, updateGuestOrder} from '../store/guestOrder'
+import {element} from 'prop-types'
+import {displayPrice, formatInput} from '../utilityfunc'
+import Loader from 'react-loader-spinner'
 
 class OneProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: 0
+      value: 1
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -21,36 +27,83 @@ class OneProduct extends Component {
   handleChange(event) {
     this.setState({value: event.target.value})
   }
-  /*eslint-disable */
-  handleSubmit(product_id, userId, price) {
-    let amount = Number(this.state.value)
-    let total_price = price * amount
 
-    return async event => {
-      event.preventDefault()
-      if (userId) {
-        await this.props.checkProdExists(userId, product_id)
-        if (this.props.foundProd) {
-          let orig_amount = this.props.foundProd.products[0].order_product
-            .amount
-          this.props.updateOrder(
-            {amount: amount + orig_amount},
-            userId,
-            product_id
-          )
+  handleSubmit(product_id, userId, price, name, img) {
+    if (this.state.value !== '') {
+      let amount = Number(this.state.value)
+      let total_price = price * amount
+      return async event => {
+        event.preventDefault()
+        if (userId) {
+          await this.props.checkProdExists(userId, product_id)
+          if (this.props.foundProd) {
+            let orig_amount = this.props.foundProd.products[0].order_product
+              .amount
+            this.props.updateOrder(
+              {
+                amount: amount + orig_amount,
+                total_price: (amount + orig_amount) * price
+              },
+              userId,
+              product_id
+            )
+          } else {
+            this.props.addShoppingCart(
+              {amount, price, total_price, product_id},
+              userId
+            )
+          }
         } else {
-          this.props.addShoppingCart(
-            {amount, price, total_price, product_id},
-            userId
-          )
-        }
-      }
+          if (
+            this.props.guestOrder
+              .map(elm => {
+                return elm.product_id
+              })
+              .includes(product_id)
+          ) {
+            let orig_guest_amount = this.props.guestOrder.filter(
+              elm => elm.product_id === product_id
+            )[0].amount
+            console.log('original_guest_amount: ', orig_guest_amount)
+            let updated_amount = orig_guest_amount + amount
+            console.log('updated amount: ', updated_amount)
 
-      let x = document.getElementById('snackbar')
-      x.className = 'show'
-      setTimeout(function() {
-        x.className = x.className.replace('show', '')
-      }, 3000)
+            let updated_total_price = updated_amount * price
+            this.props.editGuestOrder(
+              {
+                amount: updated_amount,
+                product_id,
+                price,
+                name,
+                total_price: updated_total_price,
+                img
+              },
+              product_id
+            )
+          } else {
+            this.props.postGuestOrder({
+              product_id,
+              price,
+              name,
+              amount,
+              total_price,
+              img
+            })
+          }
+        }
+
+        //README: error?
+        let x = document.getElementById('snackbar')
+        x.className = 'show'
+        setTimeout(function() {
+          x.className = x.className.replace('show', '')
+        }, 3000)
+      }
+    } else {
+      return async event => {
+        event.preventDefault()
+        alert('Please select a quantity')
+      }
     }
   }
 
@@ -59,23 +112,19 @@ class OneProduct extends Component {
     // console.log('comp mount:', this.props)
   }
 
+  componentWillUnmount() {
+    this.props.changeLoadingState()
+  }
+
   render() {
-    function displayPrice(num) {
-      let exponent = Math.pow(10, -2)
-      let answer = num * exponent
-      return answer.toFixed(2)
+    const {loading} = this.props
+    if (loading) {
+      return (
+        <div>
+          <Loader type="Rings" color="#00BFFF" height={80} width={80} />
+        </div>
+      )
     }
-
-    function formatInput(e) {
-      //this prevents unwanted input in add to cart field
-      let checkIfNum
-      if (e.key !== undefined) {
-        checkIfNum =
-          e.key === 'e' || e.key === '.' || e.key === '+' || e.key === '-'
-      }
-      return checkIfNum && e.preventDefault()
-    }
-
     return (
       <div className="one-product">
         <img id="img" src={this.props.singleproduct.img} />
@@ -93,7 +142,9 @@ class OneProduct extends Component {
             onSubmit={this.handleSubmit(
               this.props.singleproduct.id,
               this.props.match.params.user_id,
-              this.props.singleproduct.price
+              this.props.singleproduct.price,
+              this.props.singleproduct.name,
+              this.props.singleproduct.img
             )}
           >
             <label>
@@ -111,7 +162,7 @@ class OneProduct extends Component {
           </form>
         </div>
         <div id="snackbar">
-          Added {this.state.value} of these treats to cart!
+          Added {this.state.value} of these treats to your cart!
         </div>
       </div>
     )
@@ -120,8 +171,10 @@ class OneProduct extends Component {
 
 const mapState = state => {
   return {
-    singleproduct: state.singleproduct,
-    foundProd: state.pendingOrders
+    singleproduct: state.singleproduct.product,
+    loading: state.singleproduct.loading,
+    foundProd: state.pendingOrders,
+    guestOrder: state.guestOrder
   }
 }
 
@@ -133,10 +186,12 @@ const mapDispatch = dispatch => {
     checkProdExists: (userId, productId) =>
       dispatch(fetchProdOrder(userId, productId)),
     updateOrder: (pendingOrder, userId, productId) =>
-      dispatch(updatePendingOrder(pendingOrder, userId, productId))
+      dispatch(updatePendingOrder(pendingOrder, userId, productId)),
+    postGuestOrder: product => dispatch(addGuestOrder(product)),
+    editGuestOrder: (product, productId) =>
+      dispatch(updateGuestOrder(product, productId)),
+    changeLoadingState: () => dispatch(loadingProduct())
   }
 }
 
 export default connect(mapState, mapDispatch)(OneProduct)
-
-// export default OneProduct;

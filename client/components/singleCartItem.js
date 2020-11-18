@@ -1,17 +1,31 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
-
-import {removeOrder, updatePendingOrder} from '../redux/user_orders'
+import {removeOrder, updatePendingOrder} from '../store/user_orders'
+import {updateGuestOrder} from '../store/guestOrder'
+import {Link} from 'react-router-dom'
+import {displayPrice, formatInput} from '../utilityfunc'
 
 class SingleCartItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: this.props.product.order_product.amount
+      value: 0
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.product.order_product) {
+      this.setState({
+        value: this.props.product.order_product.amount
+      })
+    } else {
+      this.setState({
+        value: this.props.product.amount
+      })
+    }
   }
 
   handleChange(event) {
@@ -19,41 +33,55 @@ class SingleCartItem extends Component {
     this.setState({value: event.target.value})
   }
 
-  handleSubmit(productId) {
-    let amount = Number(this.state.value)
-    return event => {
-      event.preventDefault()
-      this.props.updateOrder({amount: amount}, this.props.userId, productId)
+  handleSubmit(productId, img, price, name) {
+    if (this.state.value !== '') {
+      let amount = Number(this.state.value)
+      let totalPrice = amount * price
+      return event => {
+        event.preventDefault()
+        if (this.props.userId) {
+          this.props.updateOrder(
+            {amount: amount, total_price: totalPrice},
+            this.props.userId,
+            productId
+          )
+        } else {
+          this.props.editGuestOrder(
+            {
+              amount,
+              img,
+              price,
+              name,
+              total_price: totalPrice,
+              product_id: productId
+            },
+            productId
+          )
+        }
+      }
+    } else {
+      return event => {
+        event.preventDefault()
+        alert('Please select a quantity')
+      }
     }
   }
 
   render() {
-    function displayPrice(num) {
-      let exponent = Math.pow(10, -2)
-      let answer = num * exponent
-      return answer.toFixed(2)
-    }
-    function formatInput(e) {
-      let checkIfNum
-      if (e.key !== undefined) {
-        checkIfNum =
-          e.key === 'e' || e.key === '.' || e.key === '+' || e.key === '-'
-      }
-      return checkIfNum && e.preventDefault()
-    }
+    let productId = this.props.product.product_id || this.props.product.id
 
-    function find(e) {
-      let checkIfNum
-      if (e.key !== undefined) {
-        checkIfNum =
-          e.key === 'e' || e.key === '.' || e.key === '+' || e.key === '-'
-      }
-      return checkIfNum && e.preventDefault()
-    }
     return (
       <div id="single-cart-product">
         <div className="cart-box">
-          <img id="cart-img" src={this.props.product.img} />
+          {this.props.userId ? (
+            <Link to={`/home/all-products/${this.props.userId}/${productId}`}>
+              <img src={this.props.product.img} id="cart-img" />
+            </Link>
+          ) : (
+            <Link to={`/all-products/${productId}`}>
+              <img src={this.props.product.img} id="cart-img" />
+            </Link>
+          )}
         </div>
         {/* <div id="cart-single-info"> */}
         <div className="cart-box">
@@ -64,7 +92,12 @@ class SingleCartItem extends Component {
           {/* <div>amount:</div> */}
           <form
             className="cart-form"
-            onSubmit={this.handleSubmit(this.props.product.id)}
+            onSubmit={this.handleSubmit(
+              this.props.product.product_id || this.props.product.id,
+              this.props.product.img,
+              this.props.product.price,
+              this.props.product.name
+            )}
           >
             {/* <label> */}
             amount:
@@ -88,10 +121,16 @@ class SingleCartItem extends Component {
         <div className="cart-box">
           <div>total:</div>
           <div>
-            $
-            {displayPrice(
-              this.props.product.price * this.props.product.order_product.amount
-            )}
+            {this.props.product.order_product
+              ? '$' +
+                displayPrice(
+                  this.props.product.price *
+                    this.props.product.order_product.amount
+                )
+              : '$' +
+                displayPrice(
+                  this.props.product.price * this.props.product.amount
+                )}
           </div>
         </div>
         {/* </div> */}
@@ -103,7 +142,9 @@ class SingleCartItem extends Component {
 const mapDispatch = dispatch => {
   return {
     updateOrder: (pendingOrder, userId, productId) =>
-      dispatch(updatePendingOrder(pendingOrder, userId, productId))
+      dispatch(updatePendingOrder(pendingOrder, userId, productId)),
+    editGuestOrder: (product, productId) =>
+      dispatch(updateGuestOrder(product, productId))
   }
 }
 

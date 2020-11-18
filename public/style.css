@@ -53,6 +53,7 @@ nav a {
   font-size: 3em;
   text-align: center;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -71,6 +72,10 @@ h1 {
 
 h2 {
   font-size: 20px;
+}
+
+h3 {
+  color: rgb(128, 0, 49);
 }
 
 a {
@@ -149,6 +154,17 @@ button:hover {
 
 #single-product {
   padding: 20px;
+}
+
+select {
+  width: 150px;
+  height: 18px;
+  border: 0px;
+  border-radius: 5px;
+  background-color: rgb(222, 255, 253);
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 2px;
 }
 
 .one-product {
@@ -254,6 +270,63 @@ input[type='submit'] {
 input[type='submit']:hover {
   background-image: linear-gradient(130deg, #bcf1f1, #77d2e6);
   color: white;
+}
+
+.whole-subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
+  border-radius: 13px;
+}
+
+#subtotal {
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(128, 0, 49);
+  margin: 10px;
+}
+
+#cart-button {
+  padding: 0.5em 1em;
+  height: 10%;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  /* background-color: #d6627a; */
+  background-image: linear-gradient(130deg, #77d2e6, #bcf1f1);
+  border-radius: 8px;
+}
+
+#cart-button:hover {
+  background-image: linear-gradient(120deg, #bcf1f1, #77d2e6);
+  color: white;
+}
+
+#all-cart-products-confirmation {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
+  border-radius: 13px;
+  margin: 20px;
+}
+
+.cart-row-confirmation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  /* background-color: #ffe1f2;
+  border: 9px solid #ffe1f2; */
+  border-radius: 13px;
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */

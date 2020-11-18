@@ -114,7 +114,7 @@ async function seed() {
       img: '/dessert-images/PastelRainbowSlice_200x200.jpg',
       description:
         'A slice of our newest, sweetest, strawberriest cake flavor!',
-      category: 'cupcake',
+      category: 'cake',
       inventoryQty: 30
     }),
     Product.create({
