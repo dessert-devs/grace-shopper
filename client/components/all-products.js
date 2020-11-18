@@ -33,9 +33,11 @@ class AllProducts extends React.Component {
       if (filter === 'Strawberries') return prod.category === 'strawberry'
     })
     return (
-      <div id="all-products">
-        <div>
-          <label htmlFor="categoryFilter">Filter by category: </label>
+      <div>
+        <div className="one-product">
+          <label htmlFor="categoryFilter" id="single-product">
+            Filter by category:{' '}
+          </label>
           <select
             onChange={this.handleSelectChange}
             value={filter}
@@ -50,28 +52,30 @@ class AllProducts extends React.Component {
             <option>Strawberries</option>
           </select>
         </div>
-
-        {products.map(element => {
-          return (
-            <div key={element.id} id="single-product">
-              <img src={element.img} id="img" />
-              <div id="product-info">
+        <div id="all-products">
+          {products.map(element => {
+            return (
+              <div key={element.id} id="single-product">
                 {this.props.match.params.user_id ? (
                   <Link
                     to={`/home/all-products/${
                       this.props.match.params.user_id
                     }/${element.id}`}
                   >
-                    {element.name}
+                    <img src={element.img} id="img" />
+                    <div id="product-info">{element.name}</div>
                   </Link>
                 ) : (
-                  <Link to={`/all-products/${element.id}`}>{element.name}</Link>
+                  <Link to={`/all-products/${element.id}`}>
+                    <img src={element.img} id="img" />
+                    <div id="product-info">{element.name}</div>
+                  </Link>
                 )}
-                --${displayPrice(element.price)}--
+                <div id="product-info">• ${displayPrice(element.price)} •</div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     )
   }

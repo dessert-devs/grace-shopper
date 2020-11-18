@@ -4,6 +4,8 @@ import thunkMiddleware from 'redux-thunk'
 //Action Type
 
 const GET_PENDING_ORDERS = 'GET_PENDING_ORDERS'
+const GET_COMPLETED_ORDERS = 'GET_COMPLETED_ORDERS'
+
 const ADD_ORDER = 'ADD_ORDER'
 const EDIT_ORDER = 'EDIT_ORDER'
 const DELETE_ORDER = 'DELETE_ORDER'
@@ -15,6 +17,13 @@ const getPendingOrders = pendingOrders => {
   return {
     type: GET_PENDING_ORDERS,
     pendingOrders
+  }
+}
+
+const getCompletedOrders = completedOrders => {
+  return {
+    type: GET_COMPLETED_ORDERS,
+    completedOrders
   }
 }
 
@@ -61,6 +70,17 @@ export const fetchPendingOrders = userId => {
     try {
       const response = await axios.get(`/api/users/${userId}/pending-order`)
       dispatch(getPendingOrders(response.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const fetchCompletedOrders = userId => {
+  return async dispatch => {
+    try {
+      const response = await axios.get(`/api/users/${userId}/completed-order`)
+      dispatch(getCompletedOrders(response.data))
     } catch (error) {
       console.log(error)
     }
@@ -140,6 +160,8 @@ export const checkOutOrder = userId => {
 const initialState = {}
 export default function pendingOrdersReducer(state = initialState, action) {
   switch (action.type) {
+    case GET_COMPLETED_ORDERS:
+      return action.completedOrders
     case GET_PENDING_ORDERS:
       return action.pendingOrders
     case GET_PRODUCT_ORDER:

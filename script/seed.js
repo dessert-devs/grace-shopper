@@ -29,31 +29,32 @@ async function seed() {
       name: 'Rainbow Cake',
       price: 4599,
       img: '/dessert-images/RainbowCake200x200.jpg',
-      description: 'a cake that is rainbow',
+      description:
+        'Topped with vanilla buttercream and dancing with rainbow sprinkles, our vanilla Rainbow Cake brings a bright surprise with every slice!',
       category: 'cake',
       inventoryQty: 30
     }),
     Product.create({
-      name: 'Chocolate Chip Cookies',
-      price: 700,
+      name: 'Chocolate Chip Cookie',
+      price: 250,
       img: '/dessert-images/ChocChipCookie_200x200.jpg',
-      description: 'a cookie with chocolate chips',
+      description: 'A yummy cookie with chocolate chips!',
       category: 'cookie',
       inventoryQty: 30
     }),
     Product.create({
       name: 'Donut',
-      price: 500,
+      price: 400,
       img: '/dessert-images/Donut_200x200.jpg',
-      description: 'A Strawberry Frosted Donut!',
+      description: 'A strawberry-frosted donut!',
       category: 'pastry',
       inventoryQty: 30
     }),
     Product.create({
-      name: 'Cupcake',
-      price: 300,
+      name: 'Chocolate Cupcake',
+      price: 500,
       img: '/dessert-images/ChocCupcake_200x200.jpg',
-      description: 'A Yummy Chocolate Frosted Cupcake!',
+      description: 'A tasty chocolate-frosted vanilla cupcake!',
       category: 'cupcake',
       inventoryQty: 30
     }),
@@ -61,17 +62,135 @@ async function seed() {
       name: 'Valentines Bundle',
       price: 7000,
       img: '/dessert-images/ValentinesBundle_200x200.jpg',
-      description: "A Bundle of our Cutest Valentine's Day Desserts!",
+      description: "A bundle of our cutest Valentine's Day desserts!",
       category: 'seasonal',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Cannoli',
+      price: 450,
+      img: '/dessert-images/Cannoli_200x200.jpg',
+      description: 'A classic Italian cannoli!',
+      category: 'pastry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Winter Cookie Bundle',
+      price: 3000,
+      img: '/dessert-images/WinterCookies_200x200.jpg',
+      description: 'An 8 Pack of our delightful winter-themed cookies!',
+      category: 'seasonal',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Unicorn Cake',
+      price: 4999,
+      img: '/dessert-images/UnicornCake_200x200.jpg',
+      description:
+        'Our famous rainbow cake, decorated like a mystical unicorn!',
+      category: 'cake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Strawberry Shortcake',
+      price: 3999,
+      img: '/dessert-images/StrawbShortcake_200x200.jpg',
+      description:
+        'A light and airy cake topped and filled with fresh strawberries and whipped cream!',
+      category: 'cake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Vanilla Cupcake',
+      price: 500,
+      img: '/dessert-images/VanillaCupcake_200x200.jpg',
+      description: 'A tasty vanilla-frosted vanilla cupcake!',
+      category: 'cupcake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Pastel Rainbow Slice',
+      price: 1700,
+      img: '/dessert-images/PastelRainbowSlice_200x200.jpg',
+      description:
+        'A slice of our newest, sweetest, strawberriest cake flavor!',
+      category: 'cake',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Spring Cookies',
+      price: 3000,
+      img: '/dessert-images/SpringCookies.jpg',
+      description: 'An 8 Pack of our blooming spring-themed cookies!',
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Easter Strawberries',
+      price: 3500,
+      img: '/dessert-images/EasterStrawberries_200x200.jpg',
+      description:
+        'A box of our decadent chocolate-covered strawberries, decorated in fun Easter colors and sprinkles!',
+      category: 'strawberry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Assorted Butter Cookies',
+      price: 2500,
+      img: '/dessert-images/AssortedCookies_200x200.jpg',
+      description: 'A box of our yummiest bite-sized Italian butter cookies!',
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: 'Chocolate-Covered Strawberries',
+      price: 3500,
+      img: '/dessert-images/ValStrawberries_200x200.jpg',
+      description: 'A box of our decadent chocolate-covered strawberries!',
+      category: 'strawberry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: `St. Patrick's Day Cookies`,
+      price: 3000,
+      img: '/dessert-images/StPatsDayCookies.jpg',
+      description:
+        "An 8 Pack of our whimsical St.Patrick's Day-themed cookies!",
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: `Sprinkle Cookie`,
+      price: 500,
+      img: '/dessert-images/SprinkleCookie_200x200.jpg',
+      description: 'A yummy cookie with bright rainbow sprinkles!',
+      category: 'cookie',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: `Lobster Tail`,
+      price: 600,
+      img: '/dessert-images/LobsterTail_200x200.jpg',
+      description: 'A flaky lobster tail filled with a light, sweet cream!',
+      category: 'pastry',
+      inventoryQty: 30
+    }),
+    Product.create({
+      name: `Ice Cream Sandwich`,
+      price: 800,
+      img: '/dessert-images/IceCreamSandwich_200x200.jpg',
+      description:
+        'A big scoop of vanilla bean ice cream, sandwiched between two delicious cookies of your choice!',
+      category: 'cookie',
       inventoryQty: 30
     })
   ])
 
-  const orders = await Promise.all([
-    Order.create({userId: 1}),
-    Order.create({pending: false, userId: 2}),
-    Order.create({pending: true, userId: 3})
-  ])
+  // const orders = await Promise.all([
+  //   Order.create({userId: 1}),
+  //   Order.create({pending: false, userId: 2}),
+  //   Order.create({pending: true, userId: 3})
+  // ])
 
   // const order_products = await Promise.all([
   //   Order_Product.create({

@@ -5,25 +5,47 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn, user_id}) => (
-  <div>
-    <h1>DEV'S DESSERTS</h1>
+  <div className="pattern-2">
     <nav>
       {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to={`/home/all-products/${user_id}`}>Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-          <Link to={`/users/${user_id}/shopping-cart`}>Shopping Cart</Link>
+        <div id="navbar">
+          <div className="title">
+            DEV'S DESSERTS
+            <img id="title-icon" src="/favicon.ico" />
+          </div>
+          <div id="navbar-links">
+            <img id="title-icon" src="/favicon.ico" />
+            {/* The navbar will show these links after you log in */}
+            <Link to={`/home/all-products/${user_id}`}>Home</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to={`/users/${user_id}/shopping-cart`}>Shopping Cart</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to={`/users/${user_id}/order-history`}>Order History</Link>
+            <img id="title-icon" src="/favicon.ico" />
+          </div>
         </div>
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/shopping-cart">Shopping Cart</Link>
-          <Link to="/all-products">Home</Link>
+          <div className="title">
+            DEV'S DESSERTS
+            <img id="title-icon" src="/favicon.ico" />
+          </div>
+          <div id="navbar-links">
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/all-products">Home</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/shopping-cart">Shopping Cart</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/login">Login</Link>
+            <img id="title-icon" src="/favicon.ico" />
+            <Link to="/signup">Sign Up</Link>
+            <img id="title-icon" src="/favicon.ico" />
+          </div>
         </div>
       )}
     </nav>

@@ -58,6 +58,24 @@ router.get('/:userId/pending-order', adminOrUser, async (req, res, next) => {
   }
 })
 
+//get completed order
+router.get('/:userId/completed-order', adminOrUser, async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {
+        userId: req.params.userId,
+        pending: false
+      },
+      include: {
+        model: Product
+      }
+    })
+    res.json(orders[0])
+  } catch (error) {
+    next(error)
+  }
+})
+
 //check whether userid+productid combination exists in order_product table
 router.get(
   '/:userId/pending-order/:productId',

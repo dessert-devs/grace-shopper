@@ -7,9 +7,81 @@ body {
   width: 100vw;
 }
 
+nav a {
+  display: inline-block;
+  margin: 1em;
+}
+
+.pattern-2 {
+  /* background-color: #a1dddd; */
+  background-image: linear-gradient(#77d2e6, #bcf1f1);
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  justify-items: center;
+  align-items: center;
+  z-index: 2;
+  box-shadow: 4px 5px 5px 1px rgba(0, 0, 0, 0.24);
+}
+
+#title-icon {
+  height: 1em;
+  width: 1em;
+  padding: 3px;
+}
+
+#welcome-icon {
+  height: 100px;
+  width: 100px;
+  padding: 7px;
+}
+
+#welcome-text {
+  margin: 7px;
+  padding: 7px;
+  text-align: center;
+  max-width: 600px;
+}
+
+.title {
+  /* font-family: Comic Sans MS, Comic Sans, cursive; */
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: rgb(128, 0, 49);
+  color: #f8b4ed;
+  font-size: 3em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#navbar {
+  align-items: center;
+}
+
+#navbar-links {
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  color: rgb(128, 0, 49);
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  color: rgb(128, 0, 49);
+}
+
 a {
   text-decoration: none;
   color: rgb(128, 0, 49);
+  text-align: center;
 }
 
 label {
@@ -26,14 +98,28 @@ label {
   flex-direction: column;
 }
 
-nav a {
-  display: inline-block;
-  margin: 1em;
-}
-
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+button {
+  padding: 0.5em 1em;
+  height: 10%;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  /* background-color: #d6627a; */
+  background-image: linear-gradient(120deg, #d6627a, #f09fae);
+  border-radius: 8px;
+}
+
+button:hover {
+  background-image: linear-gradient(120deg, #f09fae, #d6627a);
+  color: white;
 }
 
 #all-products {
@@ -42,19 +128,273 @@ form div {
   flex-wrap: wrap;
 }
 
-#single-product {
-  padding: 20px;
-}
-
 #img {
   border-radius: 13px;
   border-color: rgb(222, 255, 253);
   border-style: solid;
+  width: 200px;
+  height: 200px;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-small {
+  font-weight: 300;
+  font-size: 12px;
+}
+
+#all-cart-products {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#single-product {
+  padding: 20px;
+}
+
+select {
+  width: 150px;
+  height: 18px;
+  border: 0px;
+  border-radius: 5px;
+  background-color: rgb(222, 255, 253);
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 2px;
+}
+
+.one-product {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  align-items: center;
+}
+
+.one-product-info {
+  margin: 20px;
+  background-color: #fdedf6;
+  border-radius: 13px;
+  padding: 10px;
+}
+
+.one-product-text {
+  margin: 4px;
+  width: 200px;
+}
+
+#single-cart-product {
+  display: flex;
+  justify-content: space-between;
+  width: 560px;
+}
+
+#cart-single-info {
+  display: flex;
+}
+
+.cart-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
+  border-radius: 13px;
+}
+
+.cart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+  margin: 10px;
+  text-align: center;
+}
+
+#cart-img {
+  border-radius: 13px;
+  border-width: 3px;
+  border-color: rgb(222, 255, 253);
+  border-style: solid;
+  width: 75px;
+  height: 75px;
 }
 
 #product-info {
+  text-align: center;
+  width: 200px;
+}
+
+.cart-form {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+}
+
+input[type='number'] {
+  width: 50%;
+  height: 18px;
+  border: 0px;
+  border-radius: 5px;
+  background-color: #f5d0ee;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 2px;
+}
+
+input[type='number']:focus {
+  border: none;
+  background-color: #f8b4ed;
+  outline-width: 0;
+  border-radius: 5px;
+}
+
+input[type='submit'] {
+  padding: 0.5em 1em;
+  margin: 4px;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  /* background-color: #77d2e6; */
+  background-image: linear-gradient(130deg, #77d2e6, #bcf1f1);
+  border-radius: 8px;
+}
+
+input[type='submit']:hover {
+  background-image: linear-gradient(130deg, #bcf1f1, #77d2e6);
+  color: white;
+}
+
+.whole-subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
+  border-radius: 13px;
+}
+
+#subtotal {
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(128, 0, 49);
+  margin: 10px;
+}
+
+#cart-button {
+  padding: 0.5em 1em;
+  height: 10%;
+  border: none;
+  font-size: 0.75em;
+  transition: all 1s ease;
+  outline: none;
+  letter-spacing: 0.1em;
+  transition-duration: 0.4s;
+  /* background-color: #d6627a; */
+  background-image: linear-gradient(130deg, #77d2e6, #bcf1f1);
+  border-radius: 8px;
+}
+
+#cart-button:hover {
+  background-image: linear-gradient(120deg, #bcf1f1, #77d2e6);
+  color: white;
+}
+
+#all-cart-products-confirmation {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffe1f2;
+  border: 9px solid #ffe1f2;
+  border-radius: 13px;
+  margin: 20px;
+}
+
+.cart-row-confirmation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  /* background-color: #ffe1f2;
+  border: 9px solid #ffe1f2; */
+  border-radius: 13px;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #bcf1f1; /* Black background color */
+  color: black; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 13px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }

@@ -91,6 +91,13 @@ class OneProduct extends Component {
             })
           }
         }
+
+        //README: error?
+        let x = document.getElementById('snackbar')
+        x.className = 'show'
+        setTimeout(function() {
+          x.className = x.className.replace('show', '')
+        }, 3000)
       }
     } else {
       return async event => {
@@ -102,6 +109,7 @@ class OneProduct extends Component {
 
   componentDidMount() {
     this.props.getOneProduct(this.props.match.params.productId)
+    // console.log('comp mount:', this.props)
   }
 
   componentWillUnmount() {
@@ -118,33 +126,44 @@ class OneProduct extends Component {
       )
     }
     return (
-      <div>
-        <img src={this.props.singleproduct.img} />
-        <h5>{this.props.singleproduct.name}</h5>
-        <h5>${displayPrice(this.props.singleproduct.price)}</h5>
-        <h5>{this.props.singleproduct.description}</h5>
-        <form
-          onSubmit={this.handleSubmit(
-            this.props.singleproduct.id,
-            this.props.match.params.user_id,
-            this.props.singleproduct.price,
-            this.props.singleproduct.name,
-            this.props.singleproduct.img
-          )}
-        >
-          <label>
-            <input
-              type="number"
-              min="1"
-              onKeyDown={evt => {
-                formatInput(evt)
-              }}
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Add To Cart" />
-        </form>
+      <div className="one-product">
+        <img id="img" src={this.props.singleproduct.img} />
+        <div className="one-product-info">
+          <div className="one-product-text text-bold">
+            {this.props.singleproduct.name}
+          </div>
+          <div className="one-product-text">
+            ${displayPrice(this.props.singleproduct.price)}
+          </div>
+          <div className="one-product-text text-small">
+            {this.props.singleproduct.description}
+          </div>
+          <form
+            onSubmit={this.handleSubmit(
+              this.props.singleproduct.id,
+              this.props.match.params.user_id,
+              this.props.singleproduct.price,
+              this.props.singleproduct.name,
+              this.props.singleproduct.img
+            )}
+          >
+            <label>
+              <input
+                type="number"
+                min="1"
+                onKeyDown={evt => {
+                  formatInput(evt)
+                }}
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </label>
+            <input type="submit" value="Add To Cart" />
+          </form>
+        </div>
+        <div id="snackbar">
+          Added {this.state.value} of these treats to your cart!
+        </div>
       </div>
     )
   }
