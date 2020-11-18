@@ -40,7 +40,7 @@ class AllProducts extends React.Component {
                   <div id="product-info">{element.name}</div>
                 </Link>
               )}
-              <div id="product-info">--${displayPrice(element.price)}--</div>
+              <div id="product-info">• ${displayPrice(element.price)} •</div>
             </div>
           )
         })}

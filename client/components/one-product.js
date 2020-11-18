@@ -45,11 +45,12 @@ class OneProduct extends Component {
           )
         }
       }
-      // else {
-      //   // alert(
-      //   //   'Please sign up or log in in order to add items to shopping cart!'
-      //   // )
-      // }
+
+      let x = document.getElementById('snackbar')
+      x.className = 'show'
+      setTimeout(function() {
+        x.className = x.className.replace('show', '')
+      }, 3000)
     }
   }
 
@@ -85,7 +86,7 @@ class OneProduct extends Component {
           <div className="one-product-text">
             ${displayPrice(this.props.singleproduct.price)}
           </div>
-          <div className="one-product-text">
+          <div className="one-product-text text-small">
             {this.props.singleproduct.description}
           </div>
           <form
@@ -108,6 +109,9 @@ class OneProduct extends Component {
             </label>
             <input type="submit" value="Add To Cart" />
           </form>
+        </div>
+        <div id="snackbar">
+          Added {this.state.value} of these treats to cart!
         </div>
       </div>
     )

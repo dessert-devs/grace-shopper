@@ -35,7 +35,7 @@ async function seed() {
       inventoryQty: 30
     }),
     Product.create({
-      name: 'Chocolate Chip Cookies',
+      name: 'Chocolate Chip Cookie',
       price: 250,
       img: '/dessert-images/ChocChipCookie_200x200.jpg',
       description: 'A yummy cookie with chocolate chips!',

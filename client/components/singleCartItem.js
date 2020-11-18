@@ -91,7 +91,7 @@ class SingleCartItem extends Component {
             $
             {displayPrice(
               this.props.product.price * this.props.product.order_product.amount
-            ).toFixed(2)}
+            )}
           </div>
         </div>
         {/* </div> */}
