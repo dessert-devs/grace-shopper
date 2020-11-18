@@ -24,6 +24,8 @@ const Navbar = ({handleClick, isLoggedIn, user_id}) => (
             <img id="title-icon" src="/favicon.ico" />
             <Link to={`/users/${user_id}/shopping-cart`}>Shopping Cart</Link>
             <img id="title-icon" src="/favicon.ico" />
+            <Link to={`/users/${user_id}/order-history`}>Order History</Link>
+            <img id="title-icon" src="/favicon.ico" />
           </div>
         </div>
       ) : (

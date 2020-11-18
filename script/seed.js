@@ -186,11 +186,11 @@ async function seed() {
     })
   ])
 
-  const orders = await Promise.all([
-    Order.create({userId: 1}),
-    Order.create({pending: false, userId: 2}),
-    Order.create({pending: true, userId: 3})
-  ])
+  // const orders = await Promise.all([
+  //   Order.create({userId: 1}),
+  //   Order.create({pending: false, userId: 2}),
+  //   Order.create({pending: true, userId: 3})
+  // ])
 
   // const order_products = await Promise.all([
   //   Order_Product.create({
