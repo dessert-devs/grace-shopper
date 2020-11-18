@@ -6,6 +6,7 @@ import {Login, Signup, UserHome, AllProducts, OneProduct} from './components'
 import {me} from './store'
 import ShoppingCart from './components/shoppingCart'
 import Confirmation from './components/confirmation'
+import orderHistory from './components/orderHistory'
 /**
  * COMPONENT
  */
@@ -49,6 +50,11 @@ class Routes extends Component {
               exact
               path="/users/:userId/shopping-cart/confirmation"
               component={Confirmation}
+            />
+            <Route
+              exact
+              path="/users/:userId/order-history"
+              component={orderHistory}
             />
           </Switch>
         )}
