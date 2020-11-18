@@ -88,24 +88,12 @@ router.get(
 
 router.post('/:userId/pending-order', adminOrUser, async (req, res, next) => {
   try {
-    // if(req.body.firstName===undefined || req.body.lastName === undefined || req.body.email===undefined){
-    //   res.status(500).json('Fields First Name, Last Name and Email are required!')
-    // }
-
-    //-----------------
     const addedCart = await Order.findOrCreate({
       where: {userId: req.params.userId, pending: true}
     })
     const order_id = addedCart[0].dataValues.id
     console.log(order_id)
     const {amount, price, total_price, product_id} = req.body
-    // console.log('amount: ', )
-    // const product = await Product.findAll({
-    //   where: {
-    //     name: product_name
-    //   }
-    // })
-    // const product_id = product[0].dataValues.id
     const addedDetail = await Order_Product.create({
       orderId: order_id,
       amount,
@@ -114,7 +102,6 @@ router.post('/:userId/pending-order', adminOrUser, async (req, res, next) => {
       productId: product_id
     })
     res.json(addedDetail)
-    //-------------------------------------
   } catch (err) {
     next(err)
   }

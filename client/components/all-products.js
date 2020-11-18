@@ -2,21 +2,56 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fetchProducts} from '../store/product.js'
 import {Link} from 'react-router-dom'
+import {displayPrice} from '../utilityfunc'
 
 class AllProducts extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      filter: 'All'
+    }
+    this.handleSelectChange = this.handleSelectChange.bind(this)
+  }
+
+  handleSelectChange(evt) {
+    this.setState({filter: evt.target.value})
+  }
+
   componentDidMount() {
     this.props.getProducts()
   }
 
   render() {
-    function displayPrice(num) {
-      let exponent = Math.pow(10, -2)
-      return num * exponent
-    }
-
+    const {filter} = this.state
+    const products = this.props.products.filter(prod => {
+      if (filter === 'All') return prod
+      if (filter === 'Cookies') return prod.category === 'cookie'
+      if (filter === 'Cakes') return prod.category === 'cake'
+      if (filter === 'Pastries') return prod.category === 'pastry'
+      if (filter === 'Cupcakes') return prod.category === 'cupcake'
+      if (filter === 'Seasonal') return prod.category === 'seasonal'
+      if (filter === 'Strawberries') return prod.category === 'strawberry'
+    })
     return (
       <div id="all-products">
-        {this.props.products.map(element => {
+        <div>
+          <label htmlFor="categoryFilter">Filter by category: </label>
+          <select
+            onChange={this.handleSelectChange}
+            value={filter}
+            name="categoryFilter"
+          >
+            <option>All</option>
+            <option>Cookies</option>
+            <option>Cakes</option>
+            <option>Pastries</option>
+            <option>Cupcakes</option>
+            <option>Seasonal</option>
+            <option>Strawberries</option>
+          </select>
+        </div>
+
+        {products.map(element => {
           return (
             <div key={element.id} id="single-product">
               <img src={element.img} id="img" />
