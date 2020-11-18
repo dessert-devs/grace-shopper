@@ -69,6 +69,7 @@ export default function(state = defaultProduct, action) {
       const newProductState = [...state]
       newProductState.splice(foundProduct, 1, action.guestOrder)
       return newProductState
+
     case GUEST_DELETE_ORDER:
       return state.filter(order => order.product_id !== action.productId)
     default:

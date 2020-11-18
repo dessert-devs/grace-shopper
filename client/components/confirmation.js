@@ -5,28 +5,34 @@ import {displayPrice} from '../utilityfunc'
 export default class Confirmation extends Component {
   render() {
     return (
-      <div>
-        <h2>Your order is confirmed! Thanks for shopping!</h2>
-        <h3> Order summary: </h3>
-        <div>
-          {this.props.location.state.orders.map(order => {
-            return (
-              <div key={order.id}>
-                <img className="imgs" src={order.img} />
-                <h5>{order.name}</h5>
-                <h5>
-                  Price per unit: ${displayPrice(order.order_product.price)}
-                </h5>
-                <h5>unit(s): {order.order_product.amount}</h5>
-                <h5>
-                  Total Price: ${displayPrice(order.order_product.total_price)}
-                </h5>
-              </div>
-            )
-          })}
+      <div id="all-cart-products">
+        <h1>Your order is confirmed! Thanks for shopping!</h1>
+        <div id="all-cart-products-confirmation">
+          <h3> Order Summary: </h3>
+          <div id="cart-list">
+            {this.props.location.state.orders.map(order => {
+              return (
+                <div key={order.id} className="cart-row-confirmation">
+                  <img id="cart-img" src={order.img} />
+                  <div className="cart-box">{order.name}</div>
+                  <div className="cart-box">
+                    Price Per Unit: ${displayPrice(order.order_product.price)}
+                  </div>
+                  <div className="cart-box">
+                    Unit(s): {order.order_product.amount}
+                  </div>
+                  <div className="cart-box">
+                    Total Price: $
+                    {displayPrice(order.order_product.total_price)}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <h1>-------------------------</h1>
+          <h3>Subtotal: ${displayPrice(this.props.location.state.subtotal)}</h3>
         </div>
-        <h1>-------------------------</h1>
-        <h3>Subtotal: ${displayPrice(this.props.location.state.subtotal)}</h3>
+        <img src="/favicon.ico" id="welcome-icon" />
       </div>
     )
   }

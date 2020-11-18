@@ -69,28 +69,38 @@ class SingleCartItem extends Component {
 
   render() {
     let productId = this.props.product.product_id || this.props.product.id
+
     return (
-      <div>
-        {this.props.userId ? (
-          <Link to={`/home/all-products/${this.props.userId}/${productId}`}>
-            <img className="imgs" src={this.props.product.img} />
-          </Link>
-        ) : (
-          <Link to={`/all-products/${productId}`}>
-            <img className="imgs" src={this.props.product.img} />
-          </Link>
-        )}
-        <h2>{this.props.product.name}</h2>
-        <h2>amount:</h2>
-        <form
-          onSubmit={this.handleSubmit(
-            this.props.product.product_id || this.props.product.id,
-            this.props.product.img,
-            this.props.product.price,
-            this.props.product.name
+      <div id="single-cart-product">
+        <div className="cart-box">
+          {this.props.userId ? (
+            <Link to={`/home/all-products/${this.props.userId}/${productId}`}>
+              <img src={this.props.product.img} id="cart-img" />
+            </Link>
+          ) : (
+            <Link to={`/all-products/${productId}`}>
+              <img src={this.props.product.img} id="cart-img" />
+            </Link>
           )}
-        >
-          <label>
+        </div>
+        {/* <div id="cart-single-info"> */}
+        <div className="cart-box">
+          <div />
+          {this.props.product.name}
+        </div>
+        <div className="cart-box">
+          {/* <div>amount:</div> */}
+          <form
+            className="cart-form"
+            onSubmit={this.handleSubmit(
+              this.props.product.product_id || this.props.product.id,
+              this.props.product.img,
+              this.props.product.price,
+              this.props.product.name
+            )}
+          >
+            {/* <label> */}
+            amount:
             <input
               type="number"
               min="1"
@@ -100,25 +110,30 @@ class SingleCartItem extends Component {
               value={this.state.value}
               onChange={this.handleChange}
             />
-          </label>
-          <input type="submit" value="Update" />
-        </form>
-
-        <h2>price:</h2>
-        <h4>${displayPrice(this.props.product.price)}</h4>
-        <h2>total:</h2>
-        <h4>
-          {this.props.product.order_product
-            ? '$' +
-              displayPrice(
-                this.props.product.price *
-                  this.props.product.order_product.amount
-              )
-            : '$' +
-              displayPrice(
-                this.props.product.price * this.props.product.amount
-              )}
-        </h4>
+            {/* </label> */}
+            <input type="submit" value="Update" />
+          </form>
+        </div>
+        <div className="cart-box">
+          <div>price:</div>
+          <div>${displayPrice(this.props.product.price)}</div>
+        </div>
+        <div className="cart-box">
+          <div>total:</div>
+          <div>
+            {this.props.product.order_product
+              ? '$' +
+                displayPrice(
+                  this.props.product.price *
+                    this.props.product.order_product.amount
+                )
+              : '$' +
+                displayPrice(
+                  this.props.product.price * this.props.product.amount
+                )}
+          </div>
+        </div>
+        {/* </div> */}
       </div>
     )
   }
